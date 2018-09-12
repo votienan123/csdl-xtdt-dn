@@ -1,0 +1,13 @@
+<zk xmlns:n="native" xmlns:x="xhtml" xmlns:zk="zk">
+	<n:section class="content-header">
+		<n:h1>Tổng quan</n:h1>
+	</n:section>
+	<n:section class="content">
+	    
+	    <!-- /.row -->
+	    
+	    <!-- /.row -->
+	    
+	    <!-- /.row -->
+	</n:section>
+</zk>

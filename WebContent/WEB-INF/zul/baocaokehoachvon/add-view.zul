@@ -1,0 +1,54 @@
+<idspace>
+<window xmlns:n="native" xmlns:x="xhtml" xmlns:zk="zk" apply="org.zkoss.bind.BindComposer"
+	id="wdn" border="normal" mode="modal" action="show: slideIn"
+	contentStyle="overflow:auto;" closable="true" title="${arg.save}"
+	onClose="@command('invokeGG', notify=vmArgs, detach=wdn, attr='targetQuery')"
+	whatever="@load(false,after='saveFAQCategory') @converter('vn.toancauxanh.service.DetachConverter')"
+	viewModel="@id('vm') @init(arg.model)" validationMessages="@id('vmsgs')" width="500px">
+	
+		<zscript><![CDATA[
+			vmArgs = arg.get("vmArgs");
+			strSave = arg.get("save");
+		]]></zscript> 
+		
+	<div class="row box-body">
+		<div class="col-md-12 col-sm-12 col-xs-12">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="form-group">
+						<x:label>Tên Báo cáo kế hoạch vốn<n:small class="required"> *</n:small></x:label>
+						<textbox class="form-control" maxlength="40"
+							value="@load(vm.ten) @save(vm.ten, before='saveBaoCaoKeHoachVon') 
+							@validator('vn.toancauxanh.vm.BaseValid', constraint='no empty')"/>
+						<label class="error" value="@load(vmsgs[self.previousSibling])" />
+					</div>
+				</div>	
+				<div class="col-md-12">
+					<div children="@load(vm.listKeHoach)">
+						<template name="children">
+							<div>
+							<label value="@load(each.ten)"/>
+							</div>
+						</template>
+					</div>
+				</div>	
+			</div>
+		</div>		
+	</div>
+	
+	<div class="row box-footer">
+		<x:button class="btn btn-success" zk:if="${vm.currentTask ne null}"
+			onClick="@command('saveBaoCaoKeHoachVon', list=vmArgs, attr='targetQuery',wdn=wdn, pheDuyet = false)">
+			<n:i class="fa fa-save"></n:i>&#160;&#160;Lưu
+		</x:button>
+		<x:button class="btn btn-success" zk:if="${vm.currentTask ne null}"
+			onClick="@command('saveBaoCaoKeHoachVon', list=vmArgs, attr='targetQuery',wdn=wdn, pheDuyet = true)">
+			<n:i class="fa fa-save"></n:i>&#160;&#160;Phê duyệt
+		</x:button>
+		<x:button class="btn btn-default" 
+			onClick="@command('invokeGG', notify=vmArgs, detach=wdn, attr='targetQuery')">
+			<n:i ></n:i>Hủy
+		</x:button>		
+	</div>
+</window>
+</idspace>

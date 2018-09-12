@@ -1,0 +1,105 @@
+<?page title="Quản lý thông báo" contentType="text/html;charset=UTF-8"?>
+<div xmlns:zk="zk" xmlns:n="native" xmlns:x="xhtml" apply="org.zkoss.bind.BindComposer"
+	viewModel="@id('vm') @init('vn.toancauxanh.cms.service.BaoCaoKeHoachVonService')">
+	<zscript><![CDATA[
+		self.page.title= "Báo cáo kế hoạch vốn";
+	]]></zscript>
+	<n:section class="content-header">
+		<n:h1 class="header-title">Báo cáo kế hoạch vốn</n:h1>
+	</n:section>
+	<n:section class="content">
+	    <n:div class="row">
+	    	
+	    	<n:div class="col-md-12">
+	    		<n:div class="box box-solid">
+	    			<n:div class="box-header box-header-ds">
+	    				<n:h3 class="box-title">TÌM KIẾM</n:h3>	    				
+	    			</n:div>
+	    			<!-- /.box-header -->
+	    			<n:div class="box-body box-body-ds box-body-ds2 box-danh-muc">
+    					<n:div class="row">
+    						<n:div class="col-md-12 box-search">
+    							<div class="row">    								
+    								<div class="col-lg-12">
+			    						<div class="row">
+			    							<div class="col-lg-4 col-sm-4">
+					    						<div class="form-group" >
+													<textbox class="form-control" value="@bind(vm.arg.tukhoa)" 
+														style="width:100%;display:inline;" placeholder="Từ khóa"
+														onOK="@command('cmd', notify=vm, attr='*')" />
+												</div>
+					    					</div>
+			    							<div class="col-lg-2 col-sm-4">
+					    						<div class="form-group" >
+													<combobox readonly="true" style="display:block" width="100%" placeholder="Chọn trạng thái"
+					    								value="@load(vm.arg.trangthai eq null ? 'Chọn trạng thái' : vm.arg.trangthai.value)"
+					    								model="@load(entry.trangThaiListAndNull)" selectedItem="@bind(vm.arg.trangthai)" >
+					    								<template name="model">
+					    									<comboitem value="@load(each.key)" label="@load(each.value eq '' ? 'Chọn trạng thái' : each.value)" />
+					    								</template>
+					    							</combobox>
+												</div>
+					    					</div>		    						
+					    					
+					    					<div class="col-lg-2 col-sm-4">
+					    						<x:button class="btn btn-warning" type="button"
+									    			onClick="@command('cmd', notify=vm, attr='targetQuery')" >
+													<n:i class="fa fa-search"></n:i> TÌM KIẾM
+												</x:button>
+					    					</div>				    					
+			    						</div>
+			    					</div>
+			    						  
+    							</div>
+    						</n:div>
+    						<n:div class="col-md-12 box-result">    						
+    							<n:div class="box box-solid">					    			
+					    			<!-- /.box-header -->
+					    			<n:div class="box-body box-body-ds">
+				    					<n:div class="row">
+				    						<n:div class="col-md-12">
+				    							<grid model="@load(vm.page(vm.targetQuery).fetch())" width="100%" id="grid"
+													emptyMessage="Danh sách không có báo cáo kế hoạch vốn nào" class="hidden-xs">
+													<columns>
+														<column label="STT" hflex="min" sclass="text-align-center"/>
+														<column label="Tên báo cáo kế hoạch vốn" width="90%" />					
+														<column label="Năm" width="100px" sclass="text-align-center"/>
+														<column label="Thao tác" width="80px" sclass="text-align-center"/>
+													</columns>
+													<template name="model">
+														<row apply="org.zkoss.bind.BindComposer" viewModel="@id('item') @init(each)">
+															<label value="@bind(forEachStatus.index + 1 + vm.arg.page * vm.arg.pagesize)" style="text-align:center;display:block"/>
+															<label value="@load(each.ten)"/>
+															<label value="@load(each.nam)"/>
+<!-- 															<cell sclass="text-align-center"> -->
+<!-- 																<label value="@load(each.trangThaiText)" zclass="@load(each.trangThai eq 'ap_dung' ? 'doi-tuong-blue' : 'doi-tuong-red')"/> -->
+<!-- 															</cell> -->
+															<div class="text-align-center">
+																<x:button class="btn btn-info btn-xs"  zk:if="${each.currentTask ne null}"
+																	onClick="@command('redirectPage', zul='baocaokehoachvon/view.zul',vmArgs=vm,vm=item)">
+																	<n:i class="fa fa-pencil-square-o"></n:i>
+																</x:button>
+																<x:a class="btn btn-info btn-xs" zk:if="${each.currentTask eq null}"
+																	onClick="@command('redirectPage', zul='baocaokehoachvon/view.zul',vmArgs=vm,vm=item)">
+																	<n:i class="fa fa-eye"></n:i>
+																</x:a>
+															</div>
+														</row>
+													</template>
+												</grid>
+				    														
+												<paging pageSize="@load(vm.arg.pagesize)" totalSize="@load(vm.targetQuery.fetchCount())"
+													visible="@load(vm.targetQuery.fetchCount() > vm.arg.pagesize ? true : false)"
+													activePage="@bind(vm.arg.page)" onPaging="@command('cmd', notify=vm, atr='targetQuery')" />
+				    						</n:div>
+				    					</n:div>
+				    				</n:div>
+				    			</n:div>
+    						</n:div>
+    					</n:div>
+    				</n:div>
+    			</n:div>
+    		</n:div>	    
+	    </n:div>
+	</n:section>
+</div>

@@ -1,0 +1,6 @@
+<zk>
+	<zscript>
+		desktop.setCurrentDirectory("/WEB-INF/zul");
+		Executions.forward("/WEB-INF/zul/home1.zul?resource=hosocongtrinh&amp;action=lietke&amp;file=/WEB-INF/zul/hosocongtrinh/list.zul");
+	</zscript>
+</zk>

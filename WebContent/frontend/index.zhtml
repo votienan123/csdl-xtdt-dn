@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<?script type="text/javascript" src="http://www.google.com/recaptcha/api.js?onload=loadCaptcha&render=explicit" async defer?>
+<html lang="en" xmlns:zk="zk" xmlns:z="zul" xmlns:w="client">
+	<head>
+		<meta charset="utf-8"></meta>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+		<meta name="description" content=""></meta>
+		<meta name="author" content=""></meta>
+		<link rel="icon" type="image/png" href="assetsfe/img/favicon.png"></link>
+		<title>Free bitcoins</title>
+		
+		<!-- css -->
+		<link href="assetsfe/css/bootstrap.min.css" rel="stylesheet" type="text/css"></link>
+		<link href="assetsfe/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"></link>
+		<link href="assetsfe/plugins/cubeportfolio/css/cubeportfolio.min.css" rel="stylesheet" type="text/css"></link>
+		<link href="assetsfe/css/nivo-lightbox.css" rel="stylesheet"></link>
+		<link href="assetsfe/css/nivo-lightbox-theme/default/default.css" rel="stylesheet" type="text/css"></link>
+		<link href="assetsfe/css/owl.carousel.css" rel="stylesheet" media="screen"></link>
+		<link href="assetsfe/css/owl.theme.css" rel="stylesheet" media="screen"></link>
+		<link href="assetsfe/css/animate.css" rel="stylesheet"></link>
+		<link href="assetsfe/css/style.css" rel="stylesheet"></link>
+		<link href="backend/toastr/build/toastr.css" rel="stylesheet"></link>
+		
+		<!-- boxed bg -->
+		<link id="bodybg" href="assetsfe/bodybg/bg1.css" rel="stylesheet" type="text/css"></link>
+		<!-- template skin -->
+		<link id="t-colors" href="assetsfe/color/default.css" rel="stylesheet"></link>
+	</head>
+	
+	<body id="page-top" data-spy="scroll" data-target=".navbar-custom">
+		<div id="wrapper" apply="org.zkoss.bind.BindComposer"
+			viewModel="@id('vm') @init('toancauxanh.service.MemberService')" validationMessages="@id('vmsgs')">
+			<zscript><![CDATA[
+				import javax.servlet.http.HttpServletRequest;
+				import javax.servlet.http.HttpServletResponse;
+				import javax.servlet.http.Cookie;
+			                  
+				rf = org.apache.commons.collections.MapUtils.getString(vm.arg, "rf", "");
+				if (rf != null && !"".equals(rf)) {
+					HttpServletResponse res = (HttpServletResponse) Executions.getCurrent().getNativeResponse();
+					Cookie cookie = new Cookie("refer", rf);
+					cookie.setPath("/");
+					cookie.setMaxAge(24 * 60 * 60);
+					res.addCookie(cookie);
+				} else {
+					Cookie[] cookies = ((HttpServletRequest) Executions.getCurrent().getNativeRequest()).getCookies();
+					if (cookies != null) {
+						for (int i = 0; i < cookies.length; i++) {
+							if ("refer".equals(cookies[i].getName())) {
+								rf = cookies[i].getValue();
+							}
+						}
+					}
+				}
+			]]></zscript>
+			<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+				<div class="container navigation">
+					<div class="navbar-header page-scroll">
+						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
+							<i class="fa fa-bars"></i>
+						</button>
+						<a class="navbar-brand" href="#">
+							<img class="logo-main" src="assetsfe/img/logo.png" alt="" width="80%" height="80%" />
+							<img class="logo-mobile" src="assetsfe/img/logo-mobile.png" alt="" width="80%" height="80%" />
+						</a>
+					</div>
+					
+					<!-- Collect the nav links, forms, and other content for toggling -->
+					<div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+						<ul class="nav navbar-nav">
+							<li class="active"><a href="#intro">Home</a></li>
+							<li><a href="#service">FEATURES</a></li>
+							<li><a href="#pricing">BITCOIN?</a></li>
+							<li><z:a label="SIGN UP" w:onClick="crollToTopEvt()">
+								<attribute name="onCreate"><![CDATA[
+									if (rf != null && !"".equals(rf)) {
+										login.setVisible(false);
+										signup.setVisible(true);
+										refertext.setValue(rf);
+									}
+								]]></attribute>
+								<attribute name="onClick">
+									login.setVisible(false);
+									signup.setVisible(true);
+								</attribute>
+							</z:a></li>
+							<li><z:a label="LOGIN" w:onClick="crollToTopEvt()">
+								<attribute name="onClick">
+									login.setVisible(true);
+									signup.setVisible(false);
+								</attribute>
+								<attribute name="onCreate">
+									Clients.evalJavaScript("loadCaptcha()");
+								</attribute>
+							</z:a></li>
+							<li><a href="javascript:void(0);"><span style="color:orange;">1 BITCOIN</span> = <span id="btc_usd_price" style="color:#2EE600;">$${vm.core().setting.btcPrice}</span></a></li>
+						</ul>
+					</div>
+					<!-- /.navbar-collapse -->
+				</div>
+				<!-- /.container -->
+			</nav>
+			
+			<!-- Section: intro -->
+			<section id="intro" class="intro">
+				<div class="intro-content">
+					<div class="container">
+						<div class="row">
+							<div class="col-lg-6">
+								<div class="well well-trans">
+									<div class="wow fadeInRight" data-wow-delay="0.1s">
+										<ul class="lead-list">
+											<li><span class="fa fa-check fa-2x icon-check-home"></span> <span class="list"><strong>WIN UP TO $200 IN FREE BITCOINS</strong></span></li>
+											<li><span class="fa fa-check fa-2x icon-check-home"></span> <span class="list"><strong>MULTIPLY YOUR BITCOINS PLAYING HI-LO</strong></span></li>
+											<li><span class="fa fa-check fa-2x icon-check-home"></span> <span class="list"><strong>WIN HI-LO JACKPOTS UP TO 1 BITCOIN</strong></span></li>
+											<li><span class="fa fa-check fa-2x icon-check-home"></span> <span class="list"><strong>FREE WEEKLY LOTTERY WITH BIG PRIZES</strong></span></li>
+											<li><span class="fa fa-check fa-2x icon-check-home"></span> <span class="list"><strong>50% REFERRAL COMMISSIONS FOR LIFE</strong></span></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="form-wrapper">
+									<div class="wow fadeInRight" data-wow-duration="2s" data-wow-delay="0.2s">
+										<div class="panel panel-skin" style="margin-bottom: 0;" id="login" visible="true">
+											<div class="panel-heading">
+												<h3 class="panel-title"><span class="fa fa-pencil-square-o"></span> LOGIN TO YOUR ACCOUNT <small>(It's free!)</small></h3>
+											</div>
+											<div class="panel-body">
+												<form role="form" class="lead">
+													<div class="row">
+														<div class="col-xs-12 col-sm-12 col-md-12">
+															<div class="form-group">
+																<label>Bitcoin Address/E-mail Address</label>
+																<z:textbox type="text" id="username" class="form-control input-md"/>
+															</div>
+														</div>
+														<div class="col-xs-12 col-sm-12 col-md-12">
+															<div class="form-group">
+																<label>Password</label>
+																<z:textbox type="password" id="password" class="form-control input-md"/>
+															</div>
+														</div>
+														<div class="col-xs-12 col-sm-12 col-md-12">
+															<div class="form-group" style="text-align:center;">
+																<label style="font-weight:normal !important;">Please complete the captcha below</label>
+																<div id="captcha_container"></div>
+															</div>
+														</div>
+														<z:textbox id="abc" visible="false"><custom-attributes org.zkoss.zk.ui.updateByClient="true"/></z:textbox>
+													</div>
+													<z:timer id="timer" delay="10" repeats="true" w:onTimer="zk.Widget.$('$username').updateChange_();zk.Widget.$('$password').updateChange_();zk.Widget.$('$emailreg').updateChange_();zk.Widget.$('$passreg').updateChange_();zk.Widget.$('$addressreg').updateChange_();" />
+													<z:a class="btn btn-skin btn-block btn-lg" label="LOGIN!" onClick="@command('login',email=username.getValue(),password=password.getValue(), respond=abc.getValue())"></z:a>
+													<a><p class="lead-footer">FORGOT PASSWORD?</p></a>
+												</form>
+											</div>
+										</div>
+										<div class="panel panel-skin" style="margin-bottom: 0;" id="signup" visible="false">
+											<div class="panel-heading">
+												<h3 class="panel-title"><span class="fa fa-pencil-square-o"></span> CREATE AN ACCOUNT <small>(It's free!)</small></h3>
+											</div>
+											<div class="panel-body">
+												<form role="form" class="lead">
+													<div class="row">
+														<div class="col-xs-12 col-sm-12 col-md-12">
+															<div class="form-group">
+																<label>E-mail Address</label>
+																<z:textbox type="text" id="emailreg" value="@bind(vm.newMember.email) @save(vm.newMember.email, before='register') @validator('toancauxanh.service.BaseValid', constraint='no empty, /.+@.+\\.[a-z]+/',field='email', id=vm.newMember, cmsg='Địa chỉ email này không hợp lệ.')"
+																	class="form-control input-md"/>
+																<z:label class="error" value="@load(vmsgs[self.previousSibling])" />
+															</div>
+														</div>
+														<div class="col-xs-12 col-sm-12 col-md-12">
+															<div class="form-group">
+																<label>Password</label>
+																<z:textbox type="password" id="passreg" value="@bind(vm.newMember.password) @save(vm.newMember.password, before='register')  @validator('toancauxanh.service.BaseValid', constraint='no empty')"
+																	class="form-control input-md"/>
+																<z:label class="error" value="@load(vmsgs[self.previousSibling])" />
+															</div>
+														</div>
+														<div class="col-xs-12 col-sm-12 col-md-12">
+															<div class="form-group">
+																<label>Bitcoin Address</label>
+																<z:textbox type="text" id="addressreg" value="@bind(vm.newMember.btcAddress) @save(vm.newMember.btcAddress, before='register')  @validator('toancauxanh.service.BaseValid', constraint='no empty', bitcoin=self.value)"
+																	class="form-control input-md"/>
+																<z:label class="error" value="@load(vmsgs[self.previousSibling])" />
+															</div>
+														</div>
+													</div>
+													<a class="btn btn-link pull-right" style="color:blue;">DON'T HAVE A BITCOIN ADDRESS?</a>
+													<div class="row">
+														<div class="col-xs-12 col-sm-12 col-md-12">
+															<div class="form-group">
+																<label>Your Referrer</label>
+																<z:textbox id="refertext" value="@bind(vm.newMember.ref)" readonly="true" class="form-control input-md"/>
+															</div>
+														</div>
+														<div class="col-xs-12 col-sm-12 col-md-12">
+															<div class="form-group" style="text-align:center;">
+																Please complete the captcha below
+																<div id="captcha_container2"></div>
+															</div>
+														</div>
+														<z:textbox id="abc2" visible="false"><custom-attributes org.zkoss.zk.ui.updateByClient="true"/></z:textbox>
+													</div>
+													<z:a class="btn btn-skin btn-block btn-lg" label="SIGN UP!" onClick="@command('register', respond=abc2.getValue(), ref=refertext.getValue())"></z:a>
+													<a><p class="lead-footer">FORGOT PASSWORD?</p></a>
+												</form>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>					
+						</div>		
+					</div>
+				</div>		
+			</section>
+			<!-- /Section: intro -->
+	
+			<!-- Section: boxes -->
+			<section id="boxes" class="home-section paddingtop-30 margin-bot-10">
+				<div class="container">
+					<div class="row">
+						<div class="col-sm-4 col-md-43">
+							<div class="wow fadeInUp" data-wow-delay="0.2s">
+								<div class="box text-center">
+									<span class="fa-stack fa-4x"><i class="fa fa-square-o fa-stack-2x" style="color:orange;"></i><i class="fa fa-user fa-stack-1x adjust"></i></span>
+									<h4 class="h-bold" style="margin-bottom:5px;">2,843,364</h4>
+									<p>REGISTERED USERS</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-4 col-md-4">
+							<div class="wow fadeInUp" data-wow-delay="0.2s">
+								<div class="box text-center">
+									<span class="fa-stack fa-4x"> <i class="fa fa-square-o fa-stack-2x" style="color:orange;"></i> <i class="fa fa-gamepad fa-stack-1x adjust"></i></span>
+									<h4 class="h-bold" style="margin-bottom:5px;">27,922,666,715</h4>
+									<p>GAMES PLAYED</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-4 col-md-4">
+							<div class="wow fadeInUp" data-wow-delay="0.2s">
+								<div class="box text-center">
+									<span class="fa-stack fa-4x"> <i class="fa fa-square-o fa-stack-2x" style="color:orange;"></i> <i class="fa fa-btc fa-stack-1x adjust"></i></span>
+									<div id="service" style="position:absolute;bottom:25%;"></div>
+									<h4 class="h-bold" style="margin-bottom:5px;">55,430.09218916</h4>
+									<p>BITCOINS WON BY USERS</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- /Section: boxes -->
+			
+			<!-- Section: services -->
+			<section class="home-section bg-body paddingtop-0" style="color:#fff !important;">
+				<div id="pricing" style="position:absolute;bottom:10%;"></div>
+				<div class="container marginbot-30 paddingtop-30">
+					<div class="row">
+						<div class="col-lg-8 col-lg-offset-2">
+							<div class="wow fadeInDown" data-wow-delay="0.1s">
+								<div class="section-heading text-center">
+									<h2 class="h-bold" style="color:#fff !important;">FEATURES</h2>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="container">
+					<div class="row">
+						<div class="col-sm-6 col-md-6">
+							<div class="wow fadeInRight" data-wow-delay="0.1s">
+								<div class="service-box">
+									<div class="service-icon">
+										<span style="color:#fff !important; margin-right: 4px;" class="fa fa-smile-o fa-4x"></span> 
+									</div>
+									<div class="service-desc">
+										<h5 class="h-light" style="color:#fff !important;">FREE BITCOINS EVERY HOUR</h5>
+										<p>Try your luck every hour playing our simple game and you could win up to $200 in free bitcoins!</p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-6 col-md-6">
+							<div class="wow fadeInRight" data-wow-delay="0.2s">
+								<div class="service-box">
+									<div class="service-icon">
+										<span style="color:#fff !important; margin-right: 11px;" class="fa fa-trophy fa-4x"></span> 
+									</div>
+									<div class="service-desc">
+										<h5 class="h-light" style="color:#fff !important;">FREE WEEKLY LOTTERY</h5>
+										<p>Win big prizes with our weekly lottery for which you get free tickets every time you or someone referred by you plays the free bitcoin game.</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-6 col-md-6">
+							<div class="wow fadeInRight" data-wow-delay="0.1s">
+								<div class="service-box">
+									<div class="service-icon">
+										<span style="color:#fff !important;" class="fa fa-rocket fa-4x"></span> 
+									</div>
+									<div class="service-desc">
+										<h5 class="h-light" style="color:#fff !important;">PROVABLY FAIR HI-LO GAME</h5>
+										<p>Multiply your bitcoins playing a simple HI-LO game that is designed to be provably fair by using a combination of math and cryptography. Win big HI-LO jackpot prizes up to 1 bitcoin every time you play.</p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-6 col-md-6">
+							<div class="wow fadeInRight" data-wow-delay="0.2s">
+								<div class="service-box">
+									<div class="service-icon">
+										<span style="color:#fff !important;" class="fa fa-money fa-4x"></span> 
+									</div>
+									<div class="service-desc">
+										<h5 class="h-light" style="color:#fff !important;">GENEROUS REFERRAL PROGRAM</h5>
+										<p>Refer your friends after signing up, and get 50% of whatever they win in addition to getting free lottery tickets every time they play.</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- /Section: services -->
+			
+			<!-- Section: pricing -->	
+			<section class="home-section bg-gray paddingbot-30">	
+				<div class="container marginbot-50">
+					<div class="row">
+						<div class="col-lg-12">
+							<a href="#">
+								<img src="assetsfe/img/banner-home.png" alt="" width="700px" height="100%" style="margin-left:auto; margin-right:auto; display:block;" />
+							</a>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-12">
+							<h4 style="margin-top:60px; margin-bottom:10px;">What is a Bitcoin (BTC)?</h4>
+							<p style="margin-bottom:0;">Bitcoin is the most popular cryptocurrency in the world and one of the world's largest payment systems. Unlike traditional currencies, 
+								Bitcoin is not regulated in most of the countries and it is decentralized (meaning there's no Central Bank involved). The network is transparent, you 
+								may see all the transactions in it, though it's anonymous, so you never know who's made the transaction.
+							</p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-12">
+							<h4 style="margin-top:30px; margin-bottom:10px;">What is Bitcoin faucet?</h4>
+							<p style="margin-bottom:0;">A bitcoin faucet is a website that is giving away free bitcoins to its registered users. To be able to claim all you have to do is to sign up on the 
+								website, solve a captcha and get free bitcoins. Here on Take Free Bitcoin once you reach 20 000 satoshi (0.0002 BTC), you'll be able to withdraw the 
+								bitcoins to the address you've used during sign up.
+							</p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-12">
+							<h4 style="margin-top:30px; margin-bottom:10px;">How many free bitcoins can I make here?</h4>
+							<p style="margin-bottom:0;">We're giving away random amounts of money ranging from 26 to 66 satoshi once per 5 min . You may not claim faster than that using the same 
+								IP address or account.
+							</p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-12">
+							<h4 style="margin-top:30px; margin-bottom:10px;">How is Take Free Bitcoin different from other bitcoin faucets?</h4>
+							<p style="margin-bottom:0;">Take Free Bitcoin has its own bonuses system that we're going to improve more and more every day. Every time you claim free bitcoins, there's a 
+								chance to receive a limited-time bonus into your account. All the bonuses are intended to improve your faucet. Once you receive a bonus please 
+								don't forget to activate it by clicking 'Use' in 'Bonuses' section of your account.
+							</p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-12">
+							<h4 style="margin-top:30px; margin-bottom:10px;">Why do you give out bitcoins free?</h4>
+							<p style="margin-bottom:0;">You may see a lot of advertising on all pages of our website. This is where we make the money. We decided to share a part of what we make with 
+								you, because we love you guys!
+							</p>
+						</div>
+					</div>
+				</div>
+			</section>	 
+			<!-- /Section: pricing -->
+			
+			<footer>
+				<!-- <div class="container">
+					<div class="row">
+						<div class="col-sm-6 col-md-4">
+							<div class="wow fadeInDown" data-wow-delay="0.1s">
+								<div class="widget">
+									<h5>About BitcoinTeam</h5>
+									<p>
+										Lorem ipsum dolor sit amet, ne nam purto nihil impetus, an facilisi accommodare sea
+									</p>
+								</div>
+							</div>
+							<div class="wow fadeInDown" data-wow-delay="0.1s">
+								<div class="widget">
+									<h5>Information</h5>
+									<ul>
+										<li><a href="#">Home</a></li>
+										<li><a href="#">Laboratory</a></li>
+										<li><a href="#">Medical treatment</a></li>
+										<li><a href="#">Terms  conditions</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-6 col-md-4">
+							<div class="wow fadeInDown" data-wow-delay="0.1s">
+								<div class="widget">
+									<h5>BitcoinTeam center</h5>
+									<p>
+										Nam leo lorem, tincidunt id risus ut, ornare tincidunt naqunc sit amet.
+									</p>
+									<ul>
+										<li>
+											<span class="fa-stack fa-lg">
+												<i class="fa fa-circle fa-stack-2x"></i>
+												<i class="fa fa-calendar-o fa-stack-1x fa-inverse"></i>
+											</span> Monday - Saturday, 8am to 10pm
+										</li>
+										<li>
+											<span class="fa-stack fa-lg">
+												<i class="fa fa-circle fa-stack-2x"></i>
+												<i class="fa fa-phone fa-stack-1x fa-inverse"></i>
+											</span> +84 **** *** ***
+										</li>
+										<li>
+											<span class="fa-stack fa-lg">
+												<i class="fa fa-circle fa-stack-2x"></i>
+												<i class="fa fa-envelope-o fa-stack-1x fa-inverse"></i>
+											</span> hello@bitcointeam.com
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-6 col-md-4">
+							<div class="wow fadeInDown" data-wow-delay="0.1s">
+								<div class="widget">
+									<h5>Our location</h5>
+									<p>Viet Nam</p>
+								</div>
+							</div>
+							<div class="wow fadeInDown" data-wow-delay="0.1s">
+								<div class="widget">
+									<h5>Follow us</h5>
+									<ul class="company-social">
+										<li class="social-facebook"><a href="#"><i class="fa fa-facebook"></i></a></li>
+										<li class="social-twitter"><a href="#"><i class="fa fa-twitter"></i></a></li>
+										<li class="social-google"><a href="#"><i class="fa fa-google-plus"></i></a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>	
+				</div> -->
+				<div class="sub-footer">
+					<div class="container">
+						<div class="row">
+							<div class="col-sm-6 col-md-6 col-lg-6">
+								<div class="wow fadeInLeft" data-wow-delay="0.1s">
+									<div class="text-left">
+										<p>©Copyright 2016 - FreeBitcoin - BitcoinTeam</p>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-6 col-md-6 col-lg-6">
+								<div class="wow fadeInRight" data-wow-delay="0.1s">
+									<div class="text-right">
+										<p>Developed by <a href="javascript:void(0);">BitcoinTeam</a></p>
+									</div>
+				                </div>
+				            </div>
+				        </div>	
+				    </div>
+				</div>
+			</footer>
+		</div>
+		<a href="#" class="scrollup"><i class="fa fa-angle-up active"></i></a>
+		
+		<!-- Core JavaScript Files -->
+		<script src="assetsfe/js/jquery.min.js"></script>	 
+		<script src="assetsfe/js/bootstrap.min.js"></script>
+		<script src="assetsfe/js/jquery.easing.min.js"></script>
+		<script src="assetsfe/js/wow.min.js"></script>
+		<script src="assetsfe/js/jquery.scrollTo.js"></script>
+		<script src="assetsfe/js/jquery.appear.js"></script>
+		<script src="assetsfe/js/stellar.js"></script>
+		<script src="assetsfe/plugins/cubeportfolio/js/jquery.cubeportfolio.min.js"></script>
+		<script src="assetsfe/js/owl.carousel.min.js"></script>
+		<script src="assetsfe/js/nivo-lightbox.min.js"></script>
+		<script src="assetsfe/js/custom.js"></script>
+		<script src="backend/toastr/build/toastr.min.js"></script>		
+		<script>
+			var captchaContainer = null;
+			//freebtcs2.net
+			//var sitekey = '6LehtSgTAAAAADz6R9YwRYJI4k7-a_L6MLWTDsBb';
+			//freebtcs.net
+			var sitekey = '6LfT5CgTAAAAAAno_3U7FhOupUt6ivuiV96Qwa6G';
+		    var loadCaptcha = function() {
+		      	captchaContainer = grecaptcha.render('captcha_container', {
+			        'sitekey' : sitekey,
+			        'callback' : function(response) {
+			          	zk.Widget.$('$abc').setValue(response);
+			          	zk.Widget.$('$abc').smartUpdate('value', response);
+			        }
+		      	});
+		      	captchaContainer = grecaptcha.render('captcha_container2', {
+			        'sitekey' : sitekey,
+			        'callback' : function(response) {
+			          	zk.Widget.$('$abc2').setValue(response);
+			          	zk.Widget.$('$abc2').smartUpdate('value', response);
+			        }
+		     	 });
+		    };
+			var reloadCaptcha = function() {
+			    grecaptcha.reset();
+			}
+		</script>
+	</body>
+</html>

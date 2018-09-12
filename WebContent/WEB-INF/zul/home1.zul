@@ -1,0 +1,221 @@
+<!-- Bootstrap 3.3.6 -->
+<?style href="/backend/admin-lte/bootstrap/css/bootstrap.css" type="text/css" ?>
+<!-- Font Awesome -->
+<?style href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css" ?>
+<!-- Ionicons -->
+<?style href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css" type="text/css" ?>
+<!-- jvectormap -->
+<?style href="/backend/admin-lte/plugins/jvectormap/jquery-jvectormap-1.2.2.css" type="text/css" ?>
+<!-- Theme style -->
+<?style href="/backend/admin-lte/dist/css/AdminLTE.css" type="text/css" ?>
+<!-- Custom style zk -->
+<?style href="/backend/admin-lte/dist/css/custom.css" type="text/css" ?>
+<!-- AdminLTE Skins. Choose a skin from the css/skins folder instead of downloading all of them to reduce the load. -->
+<?style href="/backend/admin-lte/dist/css/skins/_all-skins.min.css" type="text/css" ?>
+<!-- Toastr css -->
+<?style href="/backend/toastr/build/toastr.css" type="text/css" ?>
+<!-- Pace style -->
+<?style href="/backend/admin-lte/plugins/pace/pace.min.css" type="text/css" ?>
+
+<?page title="C47" contentType="text/html;charset=UTF-8"?>
+<?meta http-equiv="X-UA-Compatible" content="IE=edge"?>
+<?link rel="icon" href="/img/favicon.png" type="image/x-icon" ?>
+<?meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"?>
+
+<zk xmlns:n="native" xmlns:x="xhtml" xmlns:zk="zk" >
+<!-- jQuery 2.2.0 -->
+<!-- <script type="text/javascript" src="/backend/admin-lte/plugins/jQuery/jQuery-2.2.0.min.js" defer="true"></script> -->
+<!-- 3.3.6 -->
+<script type="text/javascript" src="/backend/admin-lte/bootstrap/js/bootstrap.js" />
+<!-- FastClick -->
+<script type="text/javascript" src="/backend/admin-lte/plugins/fastclick/fastclick.js" />
+<!-- SlimScroll 1.3.0 -->
+<script type="text/javascript" src="/backend/admin-lte/plugins/slimScroll/jquery.slimscroll.min.js" />
+<!-- AdminLTE for demo purposes -->
+<script type="text/javascript" src="/backend/admin-lte/dist/js/demo.js" />
+<!-- AdminLTE App -->
+<script type="text/javascript" src="/backend/admin-lte/dist/js/app.js" defer="true"/>
+<!-- Toastr js -->
+<script type="text/javascript" src="/backend/toastr/build/toastr.min.js" />
+<!-- PACE -->
+<script type="text/javascript" src="/backend/admin-lte/plugins/pace/pace.min.js" />
+
+	<div class="hold-transition skin-blue sidebar-mini">
+		<zscript><![CDATA[
+		                  
+			entry = new vn.toancauxanh.service.BaseObject().core();		
+			nhanVien = entry.getNhanVien();
+			int testValue = 4;
+			String resource = execution.getParameter("resource");
+			String action = execution.getParameter("action");
+			String backurl = execution.getParameter("backurl");
+			String file = execution.getParameter("file");
+			String ctxPath = execution.getContextPath();
+			String serverName = execution.getServerName() + "";
+			String serverPort = execution.getServerPort() + "";
+			String urlImage = "http://" + serverName + ":" + serverPort + "/" + ctxPath;
+			boolean coquyen = false;
+			coquyen = entry.quyen.get(resource + "_" + action);
+			
+			dakhoa = entry.nhanVienDaKhoa;
+			chuakhoa = !entry.nhanVienDaKhoa;
+			chuakichhoat = entry.nhanVienDaKichHoat;
+			dakichhoat = entry.nhanVienDaKichHoat;
+			
+			boolean noiDungActived = entry.noiDungActive.contains(resource);
+		]]></zscript>
+		<div class="wrapper">
+			<n:header class="main-header">
+			    <!-- Logo -->
+			    <n:a href="${ctxPath}/" class="logo hidden-xs">
+			      	<!-- mini logo for sidebar mini 50x50 pixels -->
+			      	<n:span class="logo-mini">PCMT</n:span>
+			      	<!-- logo for regular state and mobile devices -->
+			      	<n:span class="logo-lg"><n:b>PCMT.DN</n:b> 1.0</n:span>
+			    </n:a>
+			
+			    <!-- Header Navbar: style can be found in header.less -->
+			    <n:nav class="navbar navbar-static-top">
+				    <!-- Sidebar toggle button-->
+				    <n:a href="javascript:void(0)" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+				    	<n:span class="sr-only">Toggle navigation</n:span>
+				    </n:a>
+				    <div class="logo-mobile">
+				    	<n:span class="">PCMT.DN 1.0</n:span>				    	
+				    </div>
+				    
+			      	<!-- Navbar Right Menu -->
+			      	<div class="navbar-custom-menu" viewModel="@id('vm') @init(nhanVien)">
+				        <n:ul class="nav navbar-nav">				          	
+				          	<n:li class="dropdown notifications-menu">
+				          		
+				          		
+				          		<n:ul class="dropdown-menu">
+				          			<n:li class="header">
+				          				Bạn có 0 thông báo chưa xem
+				          			</n:li>
+				          			<n:li>
+				          				<!-- inner menu: contains the actual data -->
+				          				<div class="slimScrollDiv">
+				          					<n:ul class="menu">
+				          					</n:ul>
+				          				</div>
+				          			</n:li>
+				          			<n:li class="footer">
+				          				<a href="/thongbao">Xem tất cả</a>
+				          			</n:li>
+				          		</n:ul>
+				          	</n:li>
+
+				          	<!-- User Account: style can be found in dropdown.less -->
+				          	<n:li class="dropdown user user-menu">
+					            <n:a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
+					              	<n:img src="${urlImage}/backend/admin-lte/dist/img/user1-128x128.png" class="user-image" alt="User Image" />
+					              	<n:span class="hidden-xs">${nhanVien.hoVaTen}</n:span>
+					            </n:a>
+				            	<n:ul class="dropdown-menu">
+				              		<!-- User image -->
+				              		<n:li class="user-header">
+				                		<n:img src="${urlImage}/backend/admin-lte/dist/img/user1-128x128.png" class="img-circle" alt="User Image" />
+				                		<n:p>${nhanVien.hoVaTen}</n:p>
+				              		</n:li>
+				              		<!-- Menu Footer-->
+				              		<n:li class="user-footer">
+				                		<n:div class="pull-left">
+				                  			<a class="btn btn-success btn-flat"
+				                  				zk:onClick="@command('redirectPage', zul='nguoidung/edit.zul',vmArgs=vm,vm=nhanVien)">
+				                  				Thay đổi thông tin
+				                  			</a>
+			                			</n:div>
+			                			<n:div class="pull-right">
+			                  				<a apply="org.zkoss.bind.BindComposer" viewModel="@id('vm2') @init(entry.nhanViens)"
+			                  					onClick="@command('logout')" class="btn btn-success btn-flat">Đăng xuất</a>
+				                		</n:div>
+				              		</n:li>
+				            	</n:ul>
+				          	</n:li>
+				        </n:ul>
+			      	</div>
+				</n:nav>
+			</n:header>
+		  	<!-- Left side column. contains the logo and sidebar -->
+		  	<n:aside class="main-sidebar">
+		    	<!-- sidebar: style can be found in sidebar.less -->
+	    		<n:section class="sidebar">
+		      		<!-- Sidebar user panel -->
+			      				      
+			      	<!-- /.search form -->
+			      	<!-- sidebar menu: : style can be found in sidebar.less -->
+			      	<n:ul class="sidebar-menu">
+			        	<n:li zk:if="${entry.quyen.hosocongtrinh_lietke}" class="${resource eq 'hosocongtrinh' ? 'treeview active' : 'treeview'}">
+				          	<n:a href="${ctxPath}/">
+				            	<n:i class="fa fa-user"></n:i>
+					            <n:span>Quản lý hồ sơ</n:span>
+				          	</n:a>
+		        		</n:li>
+			        	
+		        		<n:li zk:if="${chuakhoa and chuakichhoat and (entry.quyen.nguoidung_lietke || entry.quyen.vaitro_lietke)}" 
+		        			class="${rresource eq 'nguoidung' || resource eq 'vaitro' ? 'active' : ''}">
+					        <n:a href="javascript:void(0)">
+					        	<n:i class="fa fa-users"></n:i> <n:span>Người dùng</n:span> <n:i class="fa fa-angle-left pull-right"></n:i>
+					        </n:a>
+			          		<n:ul class="treeview-menu">
+				            	<n:li zk:if="${entry.quyen.nguoidung_lietke}" class="${resource eq 'nguoidung' ? 'active' : ''}">
+									<n:a href="${ctxPath}/nguoidung"><n:i class="fa fa-user"></n:i> Người dùng</n:a>
+								</n:li>
+								<n:li zk:if="${entry.quyen.vaitro_lietke}" class="${resource eq 'vaitro' ? 'active' : ''}">
+									<n:a href="${ctxPath}/vaitro"><n:i class="fa fa-gear"></n:i> Vai trò</n:a>
+								</n:li>
+			          		</n:ul>
+		        		</n:li>
+		        		
+		        		<n:li zk:if="${chuakhoa and chuakichhoat and (entry.quyen.hosocongtrinh_lietke || entry.quyen.kehoachnhucauvon_lietke 
+		        				|| entry.quyen.baocaokehoachvon_lietke)}"
+		        			class="${resource eq 'hosocongtrinh' || resource eq 'kehoachnhucauvon' || resource eq 'baocaokehoachvon' ? 'active' : ''}">
+					        <n:a href="javascript:void(0)">
+					        	<n:i class="fa fa-server"></n:i> <n:span>Danh mục</n:span> <n:i class="fa fa-angle-left pull-right"></n:i>
+					        </n:a>
+			          		<n:ul class="treeview-menu">
+			          			
+								<n:li zk:if="${entry.quyen.hosocongtrinh_lietke}" class="${resource eq 'hosocongtrinh' ? 'active' : ''}">
+									<n:a href="${ctxPath}/hosocongtrinh">
+										<n:i class="fa fa-gear"></n:i> Hồ sơ công trình
+									</n:a>
+								</n:li>	
+								<n:li zk:if="${entry.quyen.kehoachnhucauvon_lietke}" class="${resource eq 'kehoachnhucauvon' ? 'active' : ''}">
+									<n:a href="${ctxPath}/kehoachnhucauvon">
+										<n:i class="fa fa-gear"></n:i> Kế hoạch nhu cầu vốn
+									</n:a>
+								</n:li>				
+								<n:li zk:if="${entry.quyen.baocaokehoachvon_lietke}" class="${resource eq 'baocaokehoachvon' ? 'active' : ''}">
+									<n:a href="${ctxPath}/baocaokehoachvon">
+										<n:i class="fa fa-gear"></n:i> Báo cáo kế hoạch vốn
+									</n:a>
+								</n:li>							
+			          		</n:ul>
+		        		</n:li>
+			      	</n:ul>
+			    </n:section>
+			    <!-- /.sidebar -->
+		  	</n:aside>
+		
+		 	<!-- Content Wrapper. Contains page content -->
+		  	<n:div class="content-wrapper">
+			    <include if="${coquyen and !dakhoa and dakichhoat}" instant="true" src="${execution.getParameter('file')}"></include>
+				<label if="${!coquyen and !dakhoa and dakichhoat}">Bạn không có quyền truy cập chức năng này!</label>
+				<label if="${dakhoa and dakichhoat}">Tài khoản của bạn đã bị khóa!</label>
+				<label if="${!dakhoa and !dakichhoat}">Tài khoản của bạn chưa được kích hoạt!</label>
+				<label if="${dakhoa and !dakichhoat}">Tài khoản của bạn đã bị khóa và chưa được kích hoạt!</label>
+		  	</n:div>
+		  	<!-- /.content-wrapper -->
+		
+		  	<!-- /.control-sidebar -->
+		  	<!-- Add the sidebar's background. This div must be placed immediately after the control sidebar -->
+		  	<n:div class="control-sidebar-bg"></n:div>
+		</div>
+		<!-- ./wrapper -->
+	</div>
+	<n:script>
+		$(document).ajaxStart(function() { Pace.restart(); });
+	</n:script>
+</zk>

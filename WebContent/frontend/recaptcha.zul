@@ -1,0 +1,22 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<?script type="text/javascript" src="http://www.google.com/recaptcha/api.js?onload=loadCaptcha&render=explicit" async defer?>
+<div xmlns:n="native" xmlns:x="xhtml" xmlns:zk="zk" apply="org.zkoss.bind.BindComposer"
+		viewModel="@id('vm') @init('toancauxanh.service.MemberService')">	
+	
+	<n:div id="captcha_container"></n:div>
+	<textbox id="abc" visible="false"><custom-attributes org.zkoss.zk.ui.updateByClient="true"/></textbox>
+	<button onClick="@command('testCaptcha', res=abc.value)" label="login"/>
+	<script type="text/javascript">
+		var captchaContainer = null;
+	    var loadCaptcha = function() {
+	    	
+	      captchaContainer = grecaptcha.render('captcha_container', {
+	        'sitekey' : '6LehtSgTAAAAADz6R9YwRYJI4k7-a_L6MLWTDsBb',
+	        'callback' : function(response) {
+	          zk.Widget.$('$abc').setValue(response);
+	          zk.Widget.$('$abc').smartUpdate('value', response);
+	        }
+	      });
+	    };
+	</script>
+</div>

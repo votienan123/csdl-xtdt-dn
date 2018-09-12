@@ -1,0 +1,9 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+<style>
+	.abc {
+		background: url(../assetsfe/img/logo.png) no-repeat;
+	}
+</style>
+<div class="abc"></div>
+</zk>

@@ -1,0 +1,20 @@
+<?page title="Bitcoin free"?>
+<?link rel="shortcut icon" type="image/x-icon" href="/favicon.ico"?>
+<?link rel="icon" type="image/x-icon" href="/favicon.ico"?>
+<div xmlns:n="native">
+	<zscript>
+		entry = new toancauxanh.service.BaseObject().core();
+		member = entry.member;
+		System.out.println("member: " + member);
+	</zscript>
+	<div if="${member ne null}">
+		Email: ${member.email} <n:br/>
+		Balance: ${member.balance} BTC <n:br/>
+		Inside Address: ${member.insideAddress} <n:br/>
+		<a label="Đăng xuất" onClick="entry.members.logout()"></a>
+	</div>
+	<div if="${member eq null}">
+		Ban chua dang nhap <n:br/>
+		<n:a href="${execution.getContextPath()}/register">Đăng ký</n:a>
+	</div>
+</div>

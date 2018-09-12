@@ -1,0 +1,115 @@
+<window xmlns:n="native" xmlns:x="xhtml" xmlns:zk="zk" apply="org.zkoss.bind.BindComposer"
+	id="nguoiDungWin" border="normal" mode="modal" action="show: slideIn"
+	contentStyle="overflow:auto;" closable="true" title="WITHDRAW BITCOINS"
+	viewModel="@id('vm') @init('toancauxanh.cms.service.HomeService')" validationMessages="@id('vmsgs')" width="50%">
+	<div class="wd-withdraw">
+		<div>	
+			<n:p class="center" style="font-size: 21px;padding-top: 18px;font-weight: bold;color: black;">
+				PLEASE SELECT A WITHDRAWAL OPTION
+			</n:p>	
+			<div style="text-align:center">
+				<n:ul class="withdraw_options_ul">
+					<n:li>
+						<n:a id="auto_withdraw_option_link" class="active">
+							AUTO
+						</n:a>
+					</n:li>
+					<n:li>
+						<n:a id="manual_withdraw_option_link" class="">
+							MANUAL
+						</n:a>
+					</n:li>
+				</n:ul>
+			</div>
+			<n:div id="withdraw_content_container" align="center">
+				<n:div id="auto_withdraw_option" style="display: block;"
+					 class="withdraw_options center">					
+					<n:h4 class="bold">AUTO WITHDRAW</n:h4>
+					<checkbox class="check-auto bold" checked="@load(vm.member.autoWithdraw)" label="AUTO WITHDRAW" onCheck="@command('memberCheckAuto', checkValue=self.checked)"></checkbox>
+					<label value="@load(vm.autoWithdrawStr)" zclass="@load(vm.autoWithdrawStr.toLowerCase())" class="auto-status bold"/>
+					<n:p>If you enable auto withdraw and your balance is more than <label zclass="bold" value="@load(vm.core().setting.minAutoWithdrawStr)"/>, it will be sent out as a payment to your Bitcoin wallet on Sunday. You will receive an email notifying you of the payment if you have an email address attached to your account.</n:p>
+					<n:p>When you choose to enable auto withdraw instead of opting for a manual payment, we pay the bitcoin transaction fees so you receive the full amount.</n:p>
+					<n:p>Please verify that you have the correct withdrawal address in your account, by clicking on PROFILE above, before enabling auto-withdraw.</n:p>
+					<n:p class="bold">COUNTDOWN TO NEXT PAYOUT</n:p>
+					<div class="center">
+						<div zclass="payout_time_remaining hasCountdown">
+							<n:span class="countdown_row countdown_show4">
+								<n:span class="countdown_section">
+									<label id="cdDay" zclass="countdown_amount" />
+									<n:br />
+									<n:span class="countdown_amount_lb">
+										Days
+									</n:span>
+								</n:span>
+								<n:span class="countdown_section">
+									<label id="cdHour" zclass="countdown_amount" />
+									<n:br />
+									<n:span class="countdown_amount_lb">
+										Hours
+									</n:span>
+								</n:span>
+								<n:span class="countdown_section">
+									<label id="cdMinute" zclass="countdown_amount" />
+									<n:br />
+									<n:span class="countdown_amount_lb">
+										Minutes
+									</n:span>
+								</n:span>								
+								<n:span class="countdown_section">
+									<label id="cdSecond" zclass="countdown_amount" />
+									<n:br />
+									<n:span class="countdown_amount_lb">
+										Seconds
+									</n:span>
+								</n:span>
+							</n:span>
+						</div>
+					</div>
+					<timer id="timer" delay="1000" repeats="true">
+						<attribute name="onTimer"><![CDATA[
+							String countdown = vm.core().countdown2;
+							String[] countdownArr = countdown.split(":");
+							cdDay.value = countdownArr[0];
+							cdHour.value = countdownArr[1];
+							cdMinute.value = countdownArr[2];
+							cdSecond.value = countdownArr[3];
+		    			]]></attribute>
+			    	</timer>
+				</n:div>
+				<n:div id="manual_withdraw_option" style="display: none;"
+					class="withdraw_options center">
+					<n:h4 class="bold">MANUAL WITHDRAW</n:h4>
+					<n:p>The minimum amount that you can withdraw is <label zclass="bold" value="@load(vm.core().setting.minManualWithdrawStr)"/>.</n:p>
+					<n:p>After you initiate a withdrawal request, the Bitcoins will be sent to your wallet within 6 hours and you will be able to see the withdrawal transaction by clicking on <n:span class="bold">STATS</n:span> in the top menu and then on <n:span class="bold">PERSONAL STATS</n:span> in the <n:span class="bold">STATS</n:span> page.</n:p>				
+					<n:p><n:span class="red bold">0.00000010 BTC will be deducted from the withdrawal amount to pay the transaction fee.</n:span> If you make additional withdrawal requests while you have one pending, the amounts will be clubbed together and you will only pay the transaction fee once.</n:p>
+					<n:p>The payout will be sent to the bitcoin address <label zclass="bold" value="@load(vm.core().member.btcAddress)"/>. Please make sure that this is the correct address as you cannot cancel the payout request once it has been made.</n:p>
+					<n:p>Enter the amount you wish to withdraw below</n:p>
+					<doublebox locale="en" zclass="xyz" format="#,##0.00000000" width="200px" style="text-align:center;"
+						value="@bind(vm.valueManual) @save(vm.valueManual, before='manualWithdraw')
+							@validator('toancauxanh.service.BaseValid', constraint='no empty', coinValue=self.value, memberBalance=vm.member.balance.value, minManual=vm.core().setting.minManualWithdraw)" />
+					<label class="error-withdraw" value="@load(vmsgs['manualWithdrawErr'])" />
+					<div style="margin-top:10px">						
+						<button label="WITHDRAW" zclass="btn btn-lg btn-success" onClick="@command('manualWithdraw')"/>	
+					</div>
+				</n:div>				
+			</n:div>
+		</div>		
+	</div>
+	<n:script>
+		$("#auto_withdraw_option_link").click(function(event) {
+			console.log("auto link");
+	        $(".withdraw_options").hide();
+	        $("#auto_withdraw_option").show();
+	    });
+	    $("#manual_withdraw_option_link").click(function(event) {
+	    	console.log("manual link");
+	        $(".withdraw_options").hide();
+	        $("#manual_withdraw_option").show();
+	    });
+	    $(".withdraw_options_ul a").click(function() {
+	        $(".withdraw_options_ul a.active").removeClass();
+	        $(this).addClass('active').blur();
+	        return false;
+	    });
+	</n:script>
+</window>

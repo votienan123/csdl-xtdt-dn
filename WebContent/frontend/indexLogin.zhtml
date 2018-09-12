@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<?script type="text/javascript" src="http://www.google.com/recaptcha/api.js?onload=loadCaptcha&render=explicit" async defer?>
+<html lang="en" xmlns:zk="zk" xmlns:z="zul" xmlns:w="client">
+	<head>
+		<meta charset="utf-8"></meta>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+		<meta name="description" content=""></meta>
+		<link rel="icon" type="image/png" href="assetsfe/img/favicon.png"></link>
+		<meta name="author" content=""></meta>
+		
+		<title>Freebtc.net</title>
+		
+		<!-- css -->
+		<link href="assetsfe/css/bootstrap.min.css" rel="stylesheet" type="text/css"></link>
+		<link href="assetsfe/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"></link>
+		<link href="assetsfe/plugins/cubeportfolio/css/cubeportfolio.min.css" rel="stylesheet" type="text/css"></link>
+		<link href="assetsfe/css/nivo-lightbox.css" rel="stylesheet"></link>
+		<link href="assetsfe/css/nivo-lightbox-theme/default/default.css" rel="stylesheet" type="text/css"></link>
+		<link href="assetsfe/css/owl.carousel.css" rel="stylesheet" media="screen"></link>
+		<link href="assetsfe/css/owl.theme.css" rel="stylesheet" media="screen"></link>
+		<link href="assetsfe/css/animate.css" rel="stylesheet"></link>
+		<link href="assetsfe/css/style.css" rel="stylesheet"></link>
+		<link href="backend/toastr/build/toastr.css" rel="stylesheet"></link>
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js" ></script>
+		<script type="text/javascript" src="assetsfe/js/jquery.qrcode.js" ></script>
+		<script type="text/javascript" src="assetsfe/js/qrcode.js" ></script>
+		
+		<!-- boxed bg -->
+		<link id="bodybg" href="assetsfe/bodybg/bg1.css" rel="stylesheet" type="text/css"></link>
+		<!-- template skin -->
+		<link id="t-colors" href="assetsfe/color/default.css" rel="stylesheet"></link>
+		<script>
+			var captchaContainer = null;
+			//freebtcs2.net
+			//var sitekey = '6LehtSgTAAAAADz6R9YwRYJI4k7-a_L6MLWTDsBb';
+			//freebtcs.net
+			var sitekey = '6LfT5CgTAAAAAAno_3U7FhOupUt6ivuiV96Qwa6G';
+		    var loadCaptcha = function() {
+		    	$('#captcha_container').empty();
+		      	captchaContainer = grecaptcha.render('captcha_container', {
+		        	'sitekey' : sitekey,
+		        	'callback' : function(response) {
+		          		zk.Widget.$('$abc').setValue(response);
+		          		zk.Widget.$('$abc').smartUpdate('value', response);
+		        	}
+		     	});
+		    };
+		    var reloadCaptcha = function() {
+		    	grecaptcha.reset();
+		    }
+		</script>
+	</head>
+	
+	<body id="page-top" data-spy="scroll" data-target=".navbar-custom">
+		<div id="wrapper" apply="org.zkoss.bind.BindComposer" class="imlogin"
+			viewModel="@id('vm') @init('toancauxanh.cms.service.HomeService')" validationMessages="@id('vmsgs')">
+			
+			<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+				<div class="container navigation">
+					<div class="navbar-header page-scroll">
+						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
+							<i class="fa fa-bars"></i>
+						</button>
+						<a class="navbar-brand" href="#">
+							<img class="logo-main" src="assetsfe/img/logo.png" alt="" width="80%" height="80%" />
+							<img class="logo-mobile" src="assetsfe/img/logo-mobile.png" alt="" width="80%" height="80%" />
+						</a>
+					</div>
+					<!-- Collect the nav links, forms, and other content for toggling -->
+					<div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+						<ul class="nav navbar-nav">
+							<li class="active">
+								<z:a w:onClick="crollToTopEvt()">FREE BTC
+									<attribute name="onClick">
+										freebtc_tab.setVisible(true);
+										refer_tab.setVisible(false);
+										faq_tab.setVisible(false);
+										profile_tab.setVisible(false);
+									</attribute>
+								</z:a>
+							</li>
+							<li>
+								<z:a w:onClick="crollToTopEvt()">REFER
+									<attribute name="onClick">
+										freebtc_tab.setVisible(false);
+										refer_tab.setVisible(true);
+										faq_tab.setVisible(false);
+										profile_tab.setVisible(false);
+									</attribute>
+								</z:a>
+							</li>
+							<li>
+								<z:a w:onClick="crollToTopEvt()">FAQ
+									<attribute name="onClick">
+										freebtc_tab.setVisible(false);
+										refer_tab.setVisible(false);
+										faq_tab.setVisible(true);
+										profile_tab.setVisible(false);
+									</attribute>
+								</z:a>
+							</li>
+							<li>
+								<z:a w:onClick="crollToTopEvt()">PROFILE
+									<attribute name="onClick">
+										freebtc_tab.setVisible(false);
+										refer_tab.setVisible(false);
+										faq_tab.setVisible(false);
+										profile_tab.setVisible(true);
+									</attribute>
+								</z:a>
+							</li>							
+							<li><z:a><span style="color:orange;"><z:label style="color:#2EE600;" value="@load(vm.balanceMember)"/></span></z:a></li>
+							<li><z:a label="" zclass="icon-sign-out" iconSclass="fa fa-sign-out">
+								<attribute name="onClick">
+									vm.core().members.logout()
+								</attribute>
+								<attribute name="onCreate">
+									Clients.evalJavaScript("loadCaptcha();");
+								</attribute>
+							</z:a></li>
+						</ul>
+					</div>
+					<!-- /.navbar-collapse -->
+				</div>
+				<!-- /.container -->
+			</nav>
+			
+			<div class="paddingtop-100 paddingbot-10">
+				<div class="container">
+					<div id="freebtc_tab" class="page_tabs">
+						<div class="center">
+							<z:button label="DEPOSIT" zclass="btn btn-lg btn-success" onClick="@command('deposit')"/>
+							<z:button label="WITHDRAW" zclass="btn btn-lg btn-success" onClick="@command('withdraw')"/>
+						</div>
+						<div class="row center" style="margin-top:20px;margin-bottom:20px;">
+							<z:a>
+								<z:image src="/assetsfe/img/banner-freebtc-001.png" width="auto" height="auto" />
+							</z:a>
+						</div>
+						<div class="row center" style="margin-top:20px;margin-bottom:20px;">
+							<z:a label="THIS GAME IS PROVABLY FAIR!" style="color:blue; font-size: 15px; font-weight: 700;"/>
+							<span style="display:block;">Please fill in the captcha below and click the ROLL button to get your free bitcoins. The amount of free bitcoins that you get will depend on the number that you roll and paid out according to the payout table below. You can come back and play every hour to win free bitcoins each time!</span>
+						</div>
+						<!-- .lucky number -->
+						<div class="row" style="margin-top:20px;margin-bottom:20px;">
+							<div class="col-lg-7 col-sm-12 large-centered small-centered columns no-min-height">
+								<div class="col-lg-9 col-sm-12 columns large-centered center lottery_winner_table_box_container my_tickets_row_one">
+									<div class="col-lg-6 col-sm-6 columns center table_header_background lottery_winner_table_box br_5" style="padding: 15px 0;">
+										LUCKY NUMBER
+									</div>
+									<div class="col-lg-6 col-sm-6 columns center table_header_background lottery_winner_table_box br_0_5" style="border-left: none; padding: 15px 0;">
+										PAYOUT
+									</div>
+								</div>
+								<div class="col-lg-9 col-sm-12 large-centered columns center lottery_winner_table_box_container my_tickets_row_two ">
+									<div class="col-lg-6 col-sm-6 columns center lottery_winner_table_box lottery_winner_table_first_last_cell">
+										0 - 9885
+									</div>
+									<div class="col-lg-6 col-sm-6 columns center lottery_winner_table_box lottery_winner_table_first_last_cell" style="border-left: none;" id="fp_min_reward">
+										${vm.getPayout(0.00001)}
+									</div>
+								</div>
+								<div class="col-lg-9 col-sm-12 large-centered columns center lottery_winner_table_box_container my_tickets_row_two ">
+									<div class="col-lg-6 col-sm-6 columns center lottery_winner_table_box lottery_winner_table_first_last_cell">
+										9886 - 9985
+									</div>
+									<div class="col-lg-6 col-sm-6 columns center lottery_winner_table_box lottery_winner_table_first_last_cell" style="border-left: none;">
+										${vm.getPayout(0.0001)}
+									</div>
+								</div>
+								<div class="col-lg-9 col-sm-12 large-centered columns center lottery_winner_table_box_container my_tickets_row_two ">
+									<div class="col-lg-6 col-sm-6 columns center lottery_winner_table_box lottery_winner_table_first_last_cell">
+										9986 - 9993
+									</div>
+									<div class="col-lg-6 col-sm-6 columns center lottery_winner_table_box lottery_winner_table_first_last_cell" style="border-left: none;">
+										${vm.getPayout(0.001)}
+									</div>
+								</div>
+								<div class="col-lg-9 col-sm-12 large-centered columns center lottery_winner_table_box_container my_tickets_row_two ">
+									<div class="col-lg-6 col-sm-6 columns center lottery_winner_table_box lottery_winner_table_first_last_cell">
+										9994 - 9997
+									</div>
+									<div class="col-lg-6 col-sm-6 columns center lottery_winner_table_box lottery_winner_table_first_last_cell" style="border-left: none;">
+										${vm.getPayout(0.01)}
+									</div>
+								</div>
+								<div class="col-lg-9 col-sm-12 large-centered columns center lottery_winner_table_box_container my_tickets_row_two ">
+									<div class="col-lg-6 col-sm-6 columns center lottery_winner_table_box lottery_winner_table_first_last_cell">
+										9998 - 9999
+									</div>
+									<div class="col-lg-6 col-sm-6 columns center lottery_winner_table_box lottery_winner_table_first_last_cell" style="border-left: none;">
+										${vm.getPayout(0.1)}
+									</div>
+								</div>
+								<div class="col-lg-9 col-sm-12 large-centered columns center lottery_winner_table_box_container my_tickets_row_two ">
+									<div class="col-lg-6 col-sm-6 columns center lottery_winner_table_box lottery_winner_table_first_last_cell br_0_0_0_5">
+										10000
+									</div>
+									<div class="col-lg-6 col-sm-6 columns center lottery_winner_table_box lottery_winner_table_first_last_cell br_0_0_5_0" style="border-left: none;">
+										${vm.getPayout(1)}
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- /.lucky number -->
+
+						<!-- .captcha -->
+						<z:div class="row captcha" visible="@load(vm.rollable)">
+							<div class="col-xs-12 col-sm-12 col-md-12">
+								<div class="form-group" style="text-align:center;">
+									<label style="font-weight:normal !important;">
+										Please complete the captcha below
+									</label>
+									<div id="captcha_container"></div>
+								</div>
+							</div>
+							<z:textbox id="abc" visible="false">
+								<custom-attributes org.zkoss.zk.ui.updateByClient="true" />
+							</z:textbox>
+						</z:div>
+						<!-- /.captcha -->
+
+						<!-- .free degit-->
+						<z:div visible="@load(vm.showFreePlayDigit)">
+							<h1 id="free_play_digits" style="" class="center">
+								<span id="free_play_first_digit">0</span>
+								<span id="free_play_second_digit">0</span>
+								<span id="free_play_third_digit">0</span>
+								<span id="free_play_fourth_digit">0</span>
+								<span id="free_play_fifth_digit">0</span>
+							</h1>
+						</z:div>
+						<!-- /.free degit-->
+						<div class="center">
+							<z:label visible="@load(vm.showResultRoll)" class="result-roll" value="@load(vm.resultRoll)" />
+							<z:div class="hasCountdown" visible="@load(!vm.rollable)">
+								<span class="countdown_row countdown_show2">
+									<span class="countdown_section">
+										<z:label id="cdMinute" zclass="countdown_amount" />
+										<br />
+										<span class="countdown_amount_lb">
+											Minutes
+										</span>
+									</span>
+									<span class="countdown_section">
+										<z:label id="cdSecond" zclass="countdown_amount" />
+										<br />
+										<span class="countdown_amount_lb">
+											Seconds
+										</span>
+									</span>
+								</span>
+							</z:div>
+						</div>
+						<z:timer id="timer" delay="1000" repeats="true" running="@load(!vm.rollable)">
+							<attribute name="onTimer"><![CDATA[
+								member = vm.core().member;
+								String countdown = member.countdown;
+								if (!countdown.equals("")) {
+									String[] countdownArr = countdown.split(":");
+									cdMinute.value = countdownArr[0];
+									cdSecond.value = countdownArr[1];
+								} else {					
+									member.setRollable(true);
+									member.saveNotShowNotification();
+									vm.setShowResultRoll(false);
+									vm.notifyOnTimer();
+								} 
+								//System.out.println("onTimer")
+								//self.page.title = "abc";
+								//Clients.evalJavaScript("setTitle(abc);");
+			    			]]></attribute>
+				    	</z:timer>
+						<div class="center">						
+							<z:button onClick="@command('roll', respond=abc.getValue())" label="ROLL!" visible="@load(vm.rollable)" zclass="btn btn-lg btn-primary"/>
+							<z:button id="btnX" onClick="@command('rollAfterTimeout')" visible="false" zclass=""/>
+						</div>
+						<div class="row center" style="margin-top:20px;margin-bottom:20px;">
+							<z:a>
+								<z:image src="/assetsfe/img/banner-freebtc-002.png" width="auto" height="auto" />
+							</z:a>
+						</div>
+					</div>
+					<div id="refer_tab" class="page_tabs" visible="false">
+						<div class="center">
+							<z:button label="DEPOSIT" zclass="btn btn-lg btn-success" onClick="@command('deposit')"/>
+							<z:button label="WITHDRAW" zclass="btn btn-lg btn-success" onClick="@command('withdraw')"/>
+						</div>
+						<div class="row center" style="margin-top:20px;margin-bottom:20px;">
+							<z:a>
+								<z:image src="/assetsfe/img/banner-freebtc-001.png" width="auto" height="auto" />
+							</z:a>
+						</div>
+						<div class="row center" style="margin-top:20px;margin-bottom:20px;" align="center">
+							<span style="display:block;">We pay you a massive 
+							<span style="font-weight: 700;">50% commission on the free bitcoins</span> won by your referred users, 
+							<z:a label="1 free lottery ticket" style="color:blue; font-size: 16px;" /> and 
+							<z:a label="2 reward points" style="color:blue; font-size: 16px;" /> for every FREE BTC roll they play! We also pay a hefty 
+							<span style="font-weight: 700;">0.25% commission on all bitcoins that your referred users wager in the MULTIPLY BTC HI-LO game</span>, regardless of whether they win or lose!</span>
+							<span style="display:block;">Simply promote your referral URL or share it with your friends, and anybody who signs up using it will be automatically registered as your referral and you will earn commissions whenever they use the website!</span>
+							<div class="center bold" style="padding:10px 0; font-size: 16px; font-weight: 700;">YOUR REFERRAL URL</div>
+							<div style="width:230px; display: inline-block;">
+								<input type="text" size="25" class="form-control" style="text-align:center;" value="http://freebtcs.net/?rf=${vm.refer}" onclick="this.select();" />
+							</div>
+							<div class="center bold" style="padding:10px 0; font-size: 16px; font-weight: 700;">BANNER (728x90)</div>
+							<div style="width:380px; display: inline-block;">
+								<input type="text" size="25" class="form-control" style="text-align:center;" value="http://static1.freebitco.in/banners/728x90-3.png" onclick="this.select();" />
+							</div>
+							<div class="center bold" style="padding:10px 0; font-size: 16px; font-weight: 700;">BANNER (468x60)</div>
+							<div style="width:380px; display: inline-block;">
+								<input type="text" size="25" class="form-control" style="text-align:center;" value="http://static1.freebitco.in/banners/468x60-3.png" onclick="this.select();" />
+							</div>
+							<div class="center bold" style="padding:10px 0; font-size: 16px; font-weight: 700;">FORUM SIGNATURE CODE</div>
+							<div style="width:380px; display: inline-block; padding-bottom:10px;">
+								<input type="text" size="25" class="form-control" style="text-align:center;" value="[center][url=http:/freebtcs.net/?rf=${vm.refer}][b][size=15pt][color=red]Win Free Bitcoins every hour! - [/color][color=green]www.freebtcs.net[/color][/size][/b][/url][/center]" onclick="this.select();" />
+							</div>
+							<span style="display:block;">Your referral commissions are added to your main account balance (at the top right) in real time, as and when you earn them. The numbers below are just for reference and show the commissions that you have accumulated over time.</span>
+							<span style="display:block;">Commissions for the MULTIPLY BTC HI-LO game are only calculated and credited for every 0.00006000 BTC that your referred users wager. If they wager lower amounts, these are recorded in our database but commissions are only credited at increments of 0.00006000 BTC wagered by each individual user.</span>
+							<span style="display:block;">Referral statistics are updated hourly.</span>
+						</div>
+					</div>
+					<div id="faq_tab" class="page_tabs" visible="false">
+						<div class="center">
+							<z:button style="margin-bottom:10px; display:block;" label="THIS IS THE FAQ TAB" zclass="btn btn-block btn-lg btn-success" />
+							<z:button style="margin-bottom:10px; display:block;" label="THIS IS THE FAQ TAB" zclass="btn btn-block btn-lg btn-success" />
+							<z:button style="margin-bottom:10px; display:block;" label="THIS IS THE FAQ TAB" zclass="btn btn-block btn-lg btn-success" />
+							<z:button style="margin-bottom:10px; display:block;" label="THIS IS THE FAQ TAB" zclass="btn btn-block btn-lg btn-success" />
+							<z:button style="margin-bottom:10px; display:block;" label="THIS IS THE FAQ TAB" zclass="btn btn-block btn-lg btn-success" />
+							<z:button style="margin-bottom:10px; display:block;" label="THIS IS THE FAQ TAB" zclass="btn btn-block btn-lg btn-success" />
+							<z:button style="margin-bottom:10px; display:block;" label="THIS IS THE FAQ TAB" zclass="btn btn-block btn-lg btn-success" />
+							<z:button style="margin-bottom:10px; display:block;" label="THIS IS THE FAQ TAB" zclass="btn btn-block btn-lg btn-success" />
+							<z:button style="margin-bottom:10px; display:block;" label="THIS IS THE FAQ TAB" zclass="btn btn-block btn-lg btn-success" />
+							<z:button style="margin-bottom:10px; display:block;" label="THIS IS THE FAQ TAB" zclass="btn btn-block btn-lg btn-success" />
+							<z:button style="margin-bottom:10px; display:block;" label="THIS IS THE FAQ TAB" zclass="btn btn-block btn-lg btn-success" />
+							<z:button style="margin-bottom:10px; display:block;" label="THIS IS THE FAQ TAB" zclass="btn btn-block btn-lg btn-success" />
+							<z:button style="margin-bottom:10px; display:block;" label="THIS IS THE FAQ TAB" zclass="btn btn-block btn-lg btn-success" />
+							<z:button style="margin-bottom:10px; display:block;" label="THIS IS THE FAQ TAB" zclass="btn btn-block btn-lg btn-success" />
+							<z:button style="margin-bottom:10px; display:block;" label="THIS IS THE FAQ TAB" zclass="btn btn-block btn-lg btn-success" />
+							<z:button style="margin-bottom:10px; display:block;" label="THIS IS THE FAQ TAB" zclass="btn btn-block btn-lg btn-success" />
+							<z:button style="margin-bottom:10px; display:block;" label="THIS IS THE FAQ TAB" zclass="btn btn-block btn-lg btn-success" />
+							<z:button style="margin-bottom:10px; display:block;" label="THIS IS THE FAQ TAB" zclass="btn btn-block btn-lg btn-success" />
+							<z:button style="margin-bottom:10px; display:block;" label="THIS IS THE FAQ TAB" zclass="btn btn-block btn-lg btn-success" />
+							<z:button style="margin-bottom:10px; display:block;" label="THIS IS THE FAQ TAB" zclass="btn btn-block btn-lg btn-success" />
+						</div>
+					</div>
+					<div id="profile_tab" class="page_tabs" visible="false">
+						<div class="center">
+							<z:button style="margin-bottom:10px; display:block;" label="THIS IS THE PROFILE TAB" zclass="btn btn-block btn-lg btn-success" />
+							<z:button style="margin-bottom:10px; display:block;" label="THIS IS THE PROFILE TAB" zclass="btn btn-block btn-lg btn-success" />
+							<z:button style="margin-bottom:10px; display:block;" label="THIS IS THE PROFILE TAB" zclass="btn btn-block btn-lg btn-success" />
+							<z:button style="margin-bottom:10px; display:block;" label="THIS IS THE PROFILE TAB" zclass="btn btn-block btn-lg btn-success" />
+							<z:button style="margin-bottom:10px; display:block;" label="THIS IS THE PROFILE TAB" zclass="btn btn-block btn-lg btn-success" />
+							<z:button style="margin-bottom:10px; display:block;" label="THIS IS THE PROFILE TAB" zclass="btn btn-block btn-lg btn-success" />
+							<z:button style="margin-bottom:10px; display:block;" label="THIS IS THE PROFILE TAB" zclass="btn btn-block btn-lg btn-success" />
+							<z:button style="margin-bottom:10px; display:block;" label="THIS IS THE PROFILE TAB" zclass="btn btn-block btn-lg btn-success" />
+							<z:button style="margin-bottom:10px; display:block;" label="THIS IS THE PROFILE TAB" zclass="btn btn-block btn-lg btn-success" />
+							<z:button style="margin-bottom:10px; display:block;" label="THIS IS THE PROFILE TAB" zclass="btn btn-block btn-lg btn-success" />
+							<z:button style="margin-bottom:10px; display:block;" label="THIS IS THE PROFILE TAB" zclass="btn btn-block btn-lg btn-success" />
+							<z:button style="margin-bottom:10px; display:block;" label="THIS IS THE PROFILE TAB" zclass="btn btn-block btn-lg btn-success" />
+							<z:button style="margin-bottom:10px; display:block;" label="THIS IS THE PROFILE TAB" zclass="btn btn-block btn-lg btn-success" />
+							<z:button style="margin-bottom:10px; display:block;" label="THIS IS THE PROFILE TAB" zclass="btn btn-block btn-lg btn-success" />
+							<z:button style="margin-bottom:10px; display:block;" label="THIS IS THE PROFILE TAB" zclass="btn btn-block btn-lg btn-success" />
+							<z:button style="margin-bottom:10px; display:block;" label="THIS IS THE PROFILE TAB" zclass="btn btn-block btn-lg btn-success" />
+							<z:button style="margin-bottom:10px; display:block;" label="THIS IS THE PROFILE TAB" zclass="btn btn-block btn-lg btn-success" />
+							<z:button style="margin-bottom:10px; display:block;" label="THIS IS THE PROFILE TAB" zclass="btn btn-block btn-lg btn-success" />
+							<z:button style="margin-bottom:10px; display:block;" label="THIS IS THE PROFILE TAB" zclass="btn btn-block btn-lg btn-success" />
+							<z:button style="margin-bottom:10px; display:block;" label="THIS IS THE PROFILE TAB" zclass="btn btn-block btn-lg btn-success" />
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<footer class="footer-login">
+				<div class="sub-footer">
+					<div class="container">
+						<div class="row">
+							<div class="col-sm-6 col-md-6 col-lg-6">
+								<div class="wow fadeInLeft" data-wow-delay="0.1s">
+									<div class="text-left">
+										<p>©Copyright 2016 - FreeBitcoin - BitcoinTeam</p>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-6 col-md-6 col-lg-6">
+								<div class="wow fadeInRight" data-wow-delay="0.1s">
+									<div class="text-right">
+										<p>Developed by <a href="javascript:void(0);">BitcoinTeam</a></p>
+									</div>
+				                </div>
+				            </div>
+				        </div>	
+				    </div>
+				</div>
+			</footer>
+		</div>
+		<a href="#" class="scrollup"><i class="fa fa-angle-up active"></i></a>
+		
+		<!-- Core JavaScript Files -->
+		<script src="assetsfe/js/jquery.min.js"></script>
+		<script src="assetsfe/js/wow.min.js"></script>
+		<script src="assetsfe/js/jquery.scrollTo.js"></script>
+		<script src="assetsfe/js/jquery.appear.js"></script>
+		<script src="assetsfe/js/stellar.js"></script>
+		<script src="assetsfe/plugins/cubeportfolio/js/jquery.cubeportfolio.min.js"></script>
+		<script src="assetsfe/js/owl.carousel.min.js"></script>
+		<script src="assetsfe/js/nivo-lightbox.min.js"></script>
+		<script src="assetsfe/js/custom.js"></script>
+		<script src="backend/toastr/build/toastr.min.js"></script>
+		<script type="text/javascript" src="assetsfe/js/jquery-1.10.2.js" ></script>
+		<script type="text/javascript" src="assetsfe/js/jquery.qrcode.js" ></script>
+		<script> <![CDATA[
+			function roll(randomValue) {
+				$('#free_play_digits').show();
+		        $('.free_play_element').hide();
+		       	$('.captcha').hide();		       	
+		        var intervalID = setInterval(function() {
+		            $("#free_play_first_digit").html(Math.floor(Math.random() * 9));
+		            $("#free_play_second_digit").html(Math.floor(Math.random() * 9));
+		            $("#free_play_third_digit").html(Math.floor(Math.random() * 9));
+		            $("#free_play_fourth_digit").html(Math.floor(Math.random() * 9));
+		            $("#free_play_fifth_digit").html(Math.floor(Math.random() * 9));
+		        }, 1);
+		        setTimeout(function() {
+					endRandom(randomValue + "", intervalID);
+			        zAu.send(new zk.Event(zk.Widget.$('$btnX'), 'onClick', null), 10);
+				}, 2000);
+			}
+			
+			function endRandom(number, intervalID) {
+				clearInterval(intervalID);
+				var single_digit = number.split("");
+				if (number.toString().length < 5) {
+					var remaining = 5 - number.toString().length;
+					for (var i = 0; i < remaining; i++) {
+						single_digit.unshift('0');
+					}
+				}
+				$("#free_play_first_digit").html(single_digit[0]);
+				$("#free_play_second_digit").html(single_digit[1]);
+				$("#free_play_third_digit").html(single_digit[2]);
+				$("#free_play_fourth_digit").html(single_digit[3]);
+				$("#free_play_fifth_digit").html(single_digit[4]);
+			}
+		]]>
+		</script>
+		<script>
+			$(".freebtc_link").click(function(event) {
+		        SwitchPageTabs('freebtc');
+		    });
+		    $("#refer_link").click(function(event) {
+		    	console.log("refer_link");
+		        SwitchPageTabs('refer');
+		    });
+		    $(".faq_link").click(function(event) {
+		        SwitchPageTabs('faq');
+		    });
+		    $(".profile_link").click(function(event) {
+		        SwitchPageTabs('profile');
+		    });
+			function SwitchPageTabs(tab_name) {
+				console.log("SwitchPageTabs");
+			    $(".page_tabs").hide();
+			    $("#" + tab_name + "_tab").show();
+			}
+			
+			function setTitle(title) {
+				document.title = "This is the new page title.";
+			}
+		</script>
+	</body>
+
+</html>

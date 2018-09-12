@@ -1,0 +1,46 @@
+<idspace>
+<window xmlns:n="native" xmlns:x="xhtml" xmlns:zk="zk" apply="org.zkoss.bind.BindComposer"
+	id="wdn" border="normal" mode="modal" action="show: slideIn"
+	contentStyle="overflow:auto;" closable="true" title="${arg.save}"
+	onClose="@command('invokeGG', notify=vmArgs, detach=wdn, attr='targetQuery')"
+	whatever="@load(false,after='saveFAQCategory') @converter('vn.toancauxanh.service.DetachConverter')"
+	viewModel="@id('vm') @init(arg.model)" validationMessages="@id('vmsgs')" width="500px">
+	
+		<zscript><![CDATA[
+			vmArgs = arg.get("vmArgs");
+			strSave = arg.get("save");
+		]]></zscript> 
+		
+	<div class="row box-body">
+		<div class="col-md-12 col-sm-12 col-xs-12">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="form-group">
+						<x:label>Tên hồ sơ công trinh<n:small class="required"> *</n:small></x:label>
+						<textbox class="form-control" maxlength="40"
+							value="@load(vm.ten) @save(vm.ten, before='saveHoSoCongTrinh') 
+							@validator('vn.toancauxanh.vm.BaseValid', constraint='no empty')"/>
+						<label class="error" value="@load(vmsgs[self.previousSibling])" />
+					</div>
+				</div>		
+				<div class="col-md-12">
+					<div class="form-group">
+						<checkbox label="Áp dụng" checked="@bind(vm.checkApDung)" />
+					</div>
+				</div>
+			</div>
+		</div>		
+	</div>
+	
+	<div class="row box-footer">
+		<x:button class="btn btn-success" zk:if="${(vm.noId() and entry.quyen.gioitinh_them) or (!vm.noId() and entry.quyen.gioitinh_sua)}"
+			onClick="@command('saveHoSoCongTrinh', list=vmArgs, attr='targetQuery',wdn=wdn)">
+			<n:i class="fa fa-save"></n:i>&#160;&#160;Lưu 
+		</x:button>
+		<x:button class="btn btn-default" 
+			onClick="@command('invokeGG', notify=vmArgs, detach=wdn, attr='targetQuery')">
+			<n:i ></n:i>Hủy
+		</x:button>		
+	</div>
+</window>
+</idspace>

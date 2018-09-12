@@ -1,0 +1,62 @@
+<idspace>
+<window xmlns:n="native" xmlns:x="xhtml" xmlns:zk="zk" apply="org.zkoss.bind.BindComposer"
+	id="wdn" border="normal" mode="modal" action="show: slideIn"
+	contentStyle="overflow:auto;" closable="true" title="${arg.save}"
+	onClose="@command('invokeGG', notify=vmArgs, detach=wdn, attr='targetQuery')"
+	whatever="@load(false,after='saveFAQCategory') @converter('vn.toancauxanh.service.DetachConverter')"
+	viewModel="@id('vm') @init(arg.model)" validationMessages="@id('vmsgs')" width="500px">
+	
+		<zscript><![CDATA[
+			vmArgs = arg.get("vmArgs");
+			strSave = arg.get("save");
+		]]></zscript> 
+		
+	<div class="row box-body">
+		<div class="col-md-12 col-sm-12 col-xs-12">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="form-group">
+						<x:label>Năm<n:small class="required"> *</n:small></x:label>
+						<combobox model="@load(vmArgs.listYear)" width="100%"
+							selectedItem="@load(vm.nam) @save(vm.nam, before={'doAction','doActionWithKey'}) 
+							@validator('vn.toancauxanh.vm.BaseValid', constraint='no empty')"/>
+						<label class="error" value="@load(vmsgs[self.previousSibling])" />
+					</div>
+				</div>
+				<div class="col-md-12">
+					<div class="form-group">
+						<x:label>Tên kế hoạch nhu cầu vốn<n:small class="required"> *</n:small></x:label>
+						<textbox class="form-control" maxlength="40"
+							value="@load(vm.ten) @save(vm.ten, before={'doAction','doActionWithKey'}) 
+							@validator('vn.toancauxanh.vm.BaseValid', constraint='no empty')"/>
+						<label class="error" value="@load(vmsgs[self.previousSibling])" />
+					</div>
+				</div>		
+			</div>
+		</div>		
+	</div>
+	
+	<div class="row box-footer">		
+		<div children="@load(entry.processService.getTransitions(vm.currentTask))" if="${vm.myTask}" style="display: inline-block;">
+			<template name="children">
+				<x:button class="btn btn-success" 
+					onClick="@command('doAction', flow=each, list=vmArgs, attr='targetQuery',wdn=wdn)">
+					<n:i class="fa fa-save"></n:i>&#160;&#160;${each.getProperty('name')}					
+				</x:button>
+			</template>
+		</div>
+		<div children="@load(entry.processService.getTransitions('lapNhuCauVon','taoKeHoachNhuCauVon'))" if="${vm.noId()}" style="display: inline-block;">
+			<template name="children">
+				<x:button class="btn btn-success" 
+					onClick="@command('doActionWithKey', flow=each, processDefinitionKey='taoKeHoachNhuCauVon', list=vmArgs, attr='targetQuery',wdn=wdn)">
+					<n:i class="fa fa-save"></n:i>&#160;&#160;${each.getProperty('name')}					
+				</x:button>
+			</template>
+		</div>
+		<x:button class="btn btn-default" 
+			onClick="@command('invokeGG', notify=vmArgs, detach=wdn, attr='targetQuery')">
+			<n:i ></n:i>Hủy
+		</x:button>		
+	</div>
+</window>
+</idspace>

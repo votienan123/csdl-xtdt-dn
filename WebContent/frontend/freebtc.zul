@@ -1,0 +1,230 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<div xmlns:n="native" xmlns:x="xhtml" xmlns:zk="zk" apply="org.zkoss.bind.BindComposer"
+		viewModel="@id('vm') @init('toancauxanh.cms.service.HomeService')">
+	<style>
+		#free_play_digits, #double_your_btc_digits {
+			font-size: 30px;
+			font-weight: bold;
+			padding: 10px 0 10px 0;
+		}
+		.center {
+			text-align: center;
+		}
+		
+		#free_play_digits span {
+			font-size: 1.75em;
+			border-radius: 5px;
+			color: yellow;
+			background: #45484d;
+			background: -moz-linear-gradient(top,#45484d 0%,#000000 100%);
+			background: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#45484d),color-stop(100%,#000000));
+			background: -webkit-linear-gradient(top,#45484d 0%,#000000 100%);
+			background: -o-linear-gradient(top,#45484d 0%,#000000 100%);
+			background: -ms-linear-gradient(top,#45484d 0%,#000000 100%);
+			background: linear-gradient(to bottom,#45484d 0%,#000000 100%);
+			filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#45484d',endColorstr='#000000',GradientType=0);
+			padding: 5px 10px;
+			border-radius: 5px;
+			margin-right: -5px;
+			text-shadow: 2px 2px #170101;
+		}
+		
+		#free_play_digits, #double_your_btc_digits {
+			font-size: 30px;
+			font-weight: bold;
+			padding: 10px 0 10px 0;
+		}
+		
+		.profile_page_button_style {
+			box-shadow: inset 0px 1px 0px 0px #CCE6FF;
+			text-shadow: 0 0 2px #011C22;
+			background: -webkit-gradient(linear,left top,left bottom,color-stop(0.05,#3399FF),color-stop(1,#004D99));
+			background: -moz-linear-gradient(top,#3399FF 5%,#004D99 100%);
+			background: -webkit-linear-gradient(top,#3399FF 5%,#004D99 100%);
+			background: -o-linear-gradient(top,#3399FF 5%,#004D99 100%);
+			background: -ms-linear-gradient(top,#3399FF 5%,#004D99 100%);
+			background: linear-gradient(to bottom,#3399FF 5%,#004D99 100%);
+			filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#3399FF',endColorstr='#004D99',GradientType=0);
+			background-color: #004D99;
+			border: 1px solid #0066CC;
+		}
+		.new_button_style {
+			padding: 14px;
+			color: #fff;
+			cursor: pointer;
+			width: 120px;
+			font-size: 15px;
+			font-weight: bold;
+			text-transform: uppercase;
+			margin: 10px;
+			border-radius: 3px;
+		}
+		
+		.hasCountdown {
+		    border: 1px solid #ccc;
+		    background-color: #eee;
+		    width: 160px;
+		    height: 60px;
+		    padding: 10px 0 0 0;
+	    }
+	    
+	    .countdown_row {
+	    	clear: both;
+	    	width: 100%;
+	    	padding: 0px 2px;
+	    	text-align: center;
+	    }
+	    
+	    .countdown_show2 .countdown_section {
+	    	width: 48%;;
+	    }
+	    
+	    .countdown_section {
+	    	display: block;
+	    	float: left;
+	    	font-size: 75%;
+	    	text-align: center;
+	    }
+	    
+	    .countdown_amount {font-size: 200%;}
+	</style>
+	<zscript>
+		member = vm.core().member;
+		System.out.println("member: " + member);
+	</zscript>
+	rate now: 1 BTC = ${vm.core().setting.btcPrice} USD
+	<div if="${member ne null}">
+		user: ${member.email} <a label="Đăng xuất" onClick="vm.core().members.logout()"></a><n:br/> 
+		Balance: <label value="@load(vm.balanceMember)"/><n:br/>
+		<div class="center">
+			<n:table style="width: 300px;border: 1px solid;">
+				<n:tr>
+					<n:th>LUCKY NUMBER</n:th>
+					<n:th>PAYOUT</n:th>
+				</n:tr>
+				<n:tr>
+					<n:td>0 - 9885</n:td>
+					<n:td>${vm.getPayout(0.00001)}</n:td>
+				</n:tr>
+				<n:tr>
+					<n:td>9886 - 9985</n:td>
+					<n:td>${vm.getPayout(0.0001)}</n:td>
+				</n:tr>
+				<n:tr>
+					<n:td>9986 - 9993</n:td>
+					<n:td>${vm.getPayout(0.001)}</n:td>
+				</n:tr>
+				<n:tr>
+					<n:td>9994 - 9997</n:td>
+					<n:td>${vm.getPayout(0.01)}</n:td>
+				</n:tr>
+				<n:tr>
+					<n:td>9998 - 9999</n:td>
+					<n:td>${vm.getPayout(0.1)}</n:td>
+				</n:tr>
+				<n:tr>
+					<n:td>10000</n:td>
+					<n:td>${vm.getPayout(1)}</n:td>
+				</n:tr>
+			</n:table>
+		</div>
+		
+		<div visible="@load(vm.showFreePlayDigit)" > 
+			<n:h1 id="free_play_digits" style="" class="center">   
+				<n:span id="free_play_first_digit">0</n:span>     
+				<n:span id="free_play_second_digit">0</n:span>     
+				<n:span id="free_play_third_digit">0</n:span>     
+				<n:span id="free_play_fourth_digit">0</n:span>     
+				<n:span id="free_play_fifth_digit">0</n:span> 
+			</n:h1>
+		</div>
+		
+		
+		<label visible="@load(vm.showResultRoll)" value="@load(vm.resultRoll)"/><n:br/>
+		<div class="hasCountdown" visible="@load(!vm.rollable)">
+			<n:span class="countdown_row countdown_show2">
+				<n:span class="countdown_section">
+					<label id="cdMinute" zclass="countdown_amount"/><n:br/>
+					Minutes
+				</n:span>
+				<n:span class="countdown_section">
+					<label id="cdSecond" zclass="countdown_amount"/><n:br/>
+					Seconds
+				</n:span>
+			</n:span>
+		</div>
+		
+		<timer id="timer" delay="1000" repeats="true" running="@load(!vm.rollable)">
+    			<attribute name="onTimer"><![CDATA[
+					member = vm.core().member;
+					String countdown = member.countdown;
+					if (!countdown.equals("")) {
+						String[] countdownArr = countdown.split(":");
+						cdMinute.value = countdownArr[0];
+						cdSecond.value = countdownArr[1];
+					} else {					
+						member.setRollable(true);
+						member.saveNotShowNotification();
+						vm.setShowResultRoll(false);
+						BindUtils.postNotifyChange(null, null, vm, "rollable");	
+						BindUtils.postNotifyChange(null, null, vm, "showResultRoll");	
+					} 
+    			]]>    				  				
+    			</attribute>
+    		</timer>
+		
+		<button onClick="@command('roll')" label="ROLL!" visible="@load(vm.rollable)"  class="free_play_element new_button_style profile_page_button_style"/>
+	</div>
+	<div if="${member eq null}">
+		Chua dang nhap
+	</div>
+	
+	<button id="btnX" onClick="@command('rollAfterTimeout')" visible="false" zclass=""></button>
+	<n:script>
+		<![CDATA[
+		function roll(randomValue) {
+			$('#free_play_digits').show();
+	        $('.free_play_element').hide();
+	       
+	        var intervalID = setInterval(function() {
+	            $("#free_play_first_digit").html(Math.floor(Math.random() * 9));
+	            $("#free_play_second_digit").html(Math.floor(Math.random() * 9));
+	            $("#free_play_third_digit").html(Math.floor(Math.random() * 9));
+	            $("#free_play_fourth_digit").html(Math.floor(Math.random() * 9));
+	            $("#free_play_fifth_digit").html(Math.floor(Math.random() * 9));
+	        }, 1);
+			console.log("intervalID: " + intervalID);
+	        /*$("#free_play_form_button").attr("disabled", true);*/
+	        var client_seed = $('#next_client_seed').val();
+	        var $form = $('#free_play_form'),
+	            op = $form.find('[name="op"]').val(),
+	            url = '/';
+			console.log("client_seed: " + client_seed);
+	        var post_variables = {
+	            op: op,
+	            client_seed: client_seed
+	        };
+	        setTimeout(function() {
+				endRandom(randomValue + "", intervalID);
+		        zAu.send(new zk.Event(zk.Widget.$('$btnX'), 'onClick', null), 10);
+			}, 2000);
+		}
+		
+		function endRandom(number, intervalID) {
+			clearInterval(intervalID);
+			var single_digit = number.split("");
+			if (number.toString().length < 5) {
+				var remaining = 5 - number.toString().length;
+				for (var i = 0; i < remaining; i++) {
+					single_digit.unshift('0');
+				}
+			}
+			$("#free_play_first_digit").html(single_digit[0]);
+			$("#free_play_second_digit").html(single_digit[1]);
+			$("#free_play_third_digit").html(single_digit[2]);
+			$("#free_play_fourth_digit").html(single_digit[3]);
+			$("#free_play_fifth_digit").html(single_digit[4]);
+		}
+		]]>
+	</n:script>
+</div>

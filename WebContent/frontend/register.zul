@@ -1,0 +1,57 @@
+<?style href="/login/css/bootstrap.min.css" type="text/css" ?>
+<?style href="/login/fonts/css/font-awesome.min.css" type="text/css" ?>
+<?style href="/login/css/animate.min.css" type="text/css" ?>
+<?style href="/login/css/icheck/flat/green.css" type="text/css" ?>
+<?style href="/login/css/custom-login.css" type="text/css" ?>
+<!-- Toastr css -->
+<?style href="/toastr/build/toastr.css" type="text/css" ?>
+
+<?script type="text/javascript" src="/login/js/bootstrap.min.js"?>
+<!-- Toastr js -->
+<?script type="text/javascript" src="/toastr/build/toastr.min.js"?>
+
+<?page title="Đăng ký" contentType="text/html;charset=UTF-8"?>
+<?meta http-equiv="X-UA-Compatible" content="IE=edge"?>
+<?meta name="viewport" content="width=device-width, initial-scale=1"?>
+<div xmlns:n="native" xmlns:x="xhtml" xmlns:zk="zk" apply="org.zkoss.bind.BindComposer"
+		viewModel="@id('vm') @init('toancauxanh.service.MemberService')"
+		validationMessages="@id('vmsgs')">
+	<style>
+		.field-label {float: left;text-shadow: none;color: #fff; font-size: 16px;font-weight: bold;}
+	</style>
+	<n:div id="wrapper">
+			<n:div id="login" class="animate form">
+				<n:section class="login_content">
+					<n:form>
+						<zscript>
+							newMember = vm.newMember;
+						</zscript>
+						<n:h1>Register Form</n:h1>
+						<div>
+							<label value="Email Address" class="field-label"/>
+							<textbox type="text" id="username" value="@bind(newMember.email) @validator('toancauxanh.service.BaseValid', constraint='no empty, /.+@.+\\.[a-z]+/',field='email', id=newMember, cmsg='Địa chỉ email này không hợp lệ.')"
+								class="form-control" placeholder="Email Address" />
+							<label class="error" value="@load(vmsgs[self.previousSibling])" />
+						</div>
+						<div>
+							<label value="Password" class="field-label"/>
+							<textbox type="password" id="password" value="@bind(newMember.password) @validator('toancauxanh.service.BaseValid', constraint='no empty')"
+								class="form-control" placeholder="Password" />
+							<label class="error" value="@load(vmsgs[self.previousSibling])" />
+						</div>
+						<div>
+							<label value="Bitcoin Address" class="field-label"/>
+							<textbox type="text" id="bitcoinAdd" value="@bind(newMember.btcAddress) @validator('toancauxanh.service.BaseValid', constraint='no empty', bitcoin=self.value)"
+								class="form-control" placeholder="Bitcoin Address" />
+							<label class="error" value="@load(vmsgs[self.previousSibling])" />
+						</div>
+						<div>
+							<a class="btn btn-default submit" label="Log in" onClick="@command('register')">
+							</a>
+						</div>
+						<div class="clearfix"></div>
+					</n:form>
+				</n:section>
+			</n:div>
+		</n:div>
+</div>

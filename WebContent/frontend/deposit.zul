@@ -1,0 +1,28 @@
+<window xmlns:n="native" xmlns:x="xhtml" xmlns:zk="zk" apply="org.zkoss.bind.BindComposer"
+	id="nguoiDungWin" border="normal" mode="modal" action="show: slideIn"
+	contentStyle="overflow:auto;" closable="true" title="DEPOSIT BITCOINS"
+	viewModel="@id('vm') @init('toancauxanh.cms.service.HomeService')" validationMessages="@id('vmsgs')" width="50%">
+	
+	<attribute name="onCreate">
+		Clients.evalJavaScript("loadQRCode('" + vm.core().member.insideAddress + "');");
+	</attribute>
+	<zscript>
+		entry = new toancauxanh.service.BaseObject().core();
+		String address = entry.member.insideAddress;
+	</zscript>
+	<n:script type="text/javascript">
+		var loadQRCode = function(address) {
+		   $('#addressQR').qrcode(address);
+		}
+	</n:script>
+	<div>
+		<div>	
+			<n:p class="center" style="font-size: 21px;padding-top: 18px;font-weight: bold;color: black;">
+				DEPOSIT ADDRESS
+			</n:p>	
+			<n:p class="center">Send bitcoins to the address below to top up your account balance.</n:p>
+			<n:input type="text" size="40" style="display: block;margin: 0 auto;" value="${address}" onclick="this.select();"></n:input>
+			<n:div id="addressQR"></n:div>
+		</div>		
+	</div>
+</window>

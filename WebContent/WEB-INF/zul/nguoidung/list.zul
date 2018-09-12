@@ -1,0 +1,203 @@
+<?page title="Quản lý thông báo" contentType="text/html;charset=UTF-8"?>
+<div xmlns:zk="zk" xmlns:n="native" xmlns:x="xhtml" apply="org.zkoss.bind.BindComposer"
+	viewModel="@id('vm') @init('vn.toancauxanh.service.NhanVienService')">
+	<zscript><![CDATA[
+		self.page.title= "Quản lý người dùng";
+	]]></zscript>
+	<n:section class="content-header">
+		<n:h1 class="header-title">Danh mục người dùng</n:h1>
+	</n:section>
+	<n:section class="content">
+	    <n:div class="row">
+	    	
+	    	<n:div class="col-md-12">
+	    		<n:div class="box box-solid">
+	    			<n:div class="box-header box-header-ds">
+	    				<n:h3 class="box-title">TÌM KIẾM</n:h3>	    				
+	    			</n:div>
+	    			<!-- /.box-header -->
+	    			<n:div class="box-body box-body-ds box-body-ds2 box-danh-muc">
+    					<n:div class="row">
+    						<n:div class="col-md-12 box-search">
+    							<div class="row">    								
+    								<div class="col-lg-12">
+			    						<div class="row">
+			    							<div class="col-lg-4 col-sm-6">
+					    						<div class="form-group" >
+													<textbox class="form-control form-control-tk" value="@bind(vm.arg.tukhoa)" 
+														style="width:100%;display:inline;" placeholder="Từ khóa"
+														onOK="@command('cmd', notify=vm, attr='*')" />
+												</div>
+					    					</div>
+			    							<div class="col-lg-2 col-sm-6">
+					    						<div class="form-group" >
+													<combobox readonly="true" placeholder="Chọn vai trò" 
+														model="@load(entry.vaiTros.getListAllVaiTroAndNull())"
+														value="@load(vm.arg.vaitro eq null ? 'Chọn vai trò' : vm.arg.vaitro.tenVaiTro)"
+														selectedItem="@bind(vm.arg.vaitro)" width="100%">
+														<template name="model">
+															<comboitem
+																label="@load(each.tenVaiTro eq null ? 'Chọn vai trò' : each.tenVaiTro)" />
+														</template>
+													</combobox>
+												</div>
+					    					</div>
+					    					<div class="col-lg-2 col-sm-6">
+					    						<div class="form-group" >
+													<combobox readonly="true" style="display:block" width="100%" placeholder="Chọn trạng thái"
+														value="@load(vm.arg.trangthai eq null ? 'Chọn trạng thái' : vm.arg.trangthai.value)"
+					    								model="@load(entry.trangThaiListAndNull)" selectedItem="@bind(vm.arg.trangthai)" >
+					    								<template name="model">
+					    									<comboitem value="@load(each.key)" label="@load(each.value eq '' ? 'Chọn trạng thái' : each.value)" />
+					    								</template>
+					    							</combobox>
+												</div>
+					    					</div>
+					    					<div class="col-lg-2 col-sm-6">
+					    						<x:button class="btn btn-warning" type="button"
+									    			onClick="@command('cmd', notify=vm, attr='targetQueryNhanVien')" >
+													<n:i class="fa fa-search"></n:i> TÌM KIẾM
+												</x:button>
+					    					</div>				    					
+			    						</div>
+			    					</div>
+			    						  
+    							</div>
+    						</n:div>
+    						<n:div class="col-md-12 box-result">    						
+    							<n:div class="box box-solid">					    			
+					    			<!-- /.box-header -->
+					    			<n:div class="box-body box-body-ds">
+				    					<n:div class="row">
+				    						<n:div class="col-md-12">
+				    						
+				    							<grid model="@load(vm.page(vm.targetQueryNhanVien).fetch())" width="100%" id="grid"
+													emptyMessage="Danh sách không có người dùng nào" class="hidden-xs">
+													<columns>
+														<column label="STT" hflex="min" sclass="text-align-center"/>
+														<column label="Họ và tên" width="22%" />
+														<column label="Tên đăng nhập" width="23%" />	
+														<column label="Vai trò" width="23%" />				
+														<column label="Trạng thái" width="100px" sclass="text-align-center"/>
+														<column label="Thao tác" width="105px" sclass="text-align-center"/>
+													</columns>
+													<template name="model">
+														<row apply="org.zkoss.bind.BindComposer" viewModel="@id('item') @init(each)">
+															<label value="@bind(forEachStatus.index + 1 + vm.arg.page * vm.arg.pagesize)" style="text-align:center;display:block"/>
+															<label value="@load(each.hoVaTen)"/>
+															<label value="@load(each.tenDangNhap)"/>
+															<label value="@load(each.vaiTroText)" />
+															<cell sclass="text-align-center">
+																<label value="@load(each.checkApDung ? 'Áp dụng' : 'Đã khóa')" zclass="@load(each.trangThai eq 'ap_dung' ? 'doi-tuong-blue' : 'doi-tuong-red')"/>
+															</cell>
+															<div class="text-align-center">
+																<x:button class="btn btn-info btn-xs"  zk:if="${entry.quyen.nguoidung_sua}"
+																	onClick="@command('redirectPage', zul='nguoidung/view.zul',vmArgs=vm,vm=item)">
+																	<n:i class="fa fa-pencil-square-o"></n:i>
+																</x:button>
+																<x:a class="btn btn-info btn-xs" zk:if="${entry.quyen.nguoidung_xem and !entry.quyen.nguoidung_sua}"
+																	onClick="@command('redirectPage', zul='nguoidung/view.zul',vmArgs=vm,vm=item)">
+																	<n:i class="fa fa-eye"></n:i>
+																</x:a>
+																<x:a class="btn btn-danger btn-xs" zk:if="${entry.quyen.nguoidung_xoa and item.id ne 1}"
+																	onClick="@command('deleteTrangThaiConfirmAndNotify', notify=vm, attr='targetQueryNhanVien')">
+																	<n:i class="fa fa-trash-o"></n:i>
+																</x:a>
+																<x:a class="btn btn-success btn-xs lock" zk:if="${entry.quyen.nguoidung_sua and item.checkApDung and item.id ne 1}"
+																	onClick="@command('khoaThanhVien', vm=vm)">
+																	<n:i class="fa fa-lock"></n:i>
+																</x:a>
+																
+																<x:a class="btn btn-success btn-xs unlock" zk:if="${entry.quyen.nguoidung_sua and !item.checkApDung and item.id ne 1}"
+																	onClick="@command('moKhoaThanhVien', vm=vm)">
+																	<n:i class="fa fa-unlock"></n:i>
+																</x:a>
+																
+															</div>
+														</row>
+													</template>
+												</grid>
+				    						
+				    							<div children="@load(vm.page(vm.targetQueryNhanVien).fetch())" class="visible-xs">
+				    								<template name="children" var="doiTuong">
+				    									<div class="doi-tuong-item ${doiTuongStatus.index % 2 == 0 ? '' : 'even'} ${doiTuongStatus.last ? 'last' : ''}">
+				    										<div class="doi-tuong-index">
+				    											<div class="visible-xs">
+				    												<n:span class="bold">Số thứ tự: </n:span>
+					    											<label value="@load(doiTuongStatus.index+1+ vm.arg.page * vm.arg.pagesize)"/>
+				    											</div>
+				    											<div class="hidden-xs">
+				    												<label value="@load(doiTuongStatus.index+1+ vm.arg.page * vm.arg.pagesize)"/>
+				    											</div>
+					    									</div>
+					    									<div class="doi-tuong-content">
+					    										<div class="row">
+					    											<div class="col-md-4">
+					    												<n:span class="bold">Họ và tên: </n:span>
+					    												<label value="@load(doiTuong.hoVaTen)" />
+					    											</div>
+					    											<div class="col-md-4">
+					    												<n:span class="bold">Tên đăng nhập: </n:span>
+					    												<label value="@load(doiTuong.tenDangNhap)" />
+					    											</div>
+					    											<div class="col-md-4">
+					    												<n:span class="bold">Vai trò: </n:span>
+					    												<label value="@load(doiTuong.vaiTroText)" />
+					    											</div>
+					    											<div class="col-md-4">
+					    												<n:span class="bold">Trạng thái: </n:span>
+					    												<label value="@load(doiTuong.checkApDung ? 'Áp dụng' : 'Đã khóa')" zclass="@load(doiTuong.trangThai eq 'ap_dung' ? 'doi-tuong-blue' : 'doi-tuong-red')"/>
+					    											</div>
+					    										</div>
+					    										
+					    									</div>
+					    									<div class="doi-tuong-action" viewModel="@id('vm2') @init(doiTuong)">
+					    										<div class="hanh-vi-action">
+																	<x:a class="edit-action" zk:if="${entry.quyen.nguoidung_sua}"
+																		onClick="@command('redirectPage', zul='nguoidung/edit.zul',vmArgs=vm,vm=doiTuong)">
+																		<n:i class="fa fa-pencil-square-o"></n:i>Sửa
+																	</x:a>
+																	<x:a class="edit-action" zk:if="${entry.quyen.nguoidung_xem and !entry.quyen.nguoidung_sua}"
+																		onClick="@command('redirectPage', zul='nguoidung/edit.zul',vmArgs=vm,vm=doiTuong)">
+																		<n:i class="fa fa-eye"></n:i>Xem
+																	</x:a>
+																	<x:a class="delete-action" zk:if="${entry.quyen.nguoidung_xoa and doiTuong.id ne 1}"
+																		onClick="@command('deleteTrangThaiConfirmAndNotify', notify=vm, attr='targetQueryNhanVien')">
+																		<n:i class="fa fa-trash-o"></n:i>Xóa
+																	</x:a>
+																	<x:a class="edit-action" zk:if="${entry.quyen.nguoidung_sua and doiTuong.checkApDung and doiTuong.id ne 1}"
+																		onClick="@command('khoaThanhVien', vm=vm)">
+																		<n:i class="fa fa-lock"></n:i>Khóa
+																	</x:a>
+																	
+																	<x:a class="edit-action" zk:if="${entry.quyen.nguoidung_sua and !doiTuong.checkApDung and doiTuong.id ne 1}"
+																		onClick="@command('moKhoaThanhVien', vm=vm)">
+																		<n:i class="fa fa-unlock"></n:i>Mở Khóa
+																	</x:a>
+																	
+																	
+																</div>	
+					    									</div>
+				    									</div>				    									
+				    								</template>
+				    							</div> 
+				    							<div class="div-add-action">
+				    								<x:a class="btn-trong-suot" zk:if="${entry.quyen.nguoidung_them}" onClick="@command('redirectPage', zul='nguoidung/add.zul', vmArgs=vm, vm=null)">
+						    							<n:i class="fa fa-plus"></n:i>&#160;&#160;Thêm mới
+						    						</x:a>
+				    							</div>   							
+												<paging pageSize="@load(vm.arg.pagesize)" totalSize="@load(vm.targetQueryNhanVien.fetchCount())"
+													visible="@load(vm.targetQueryNhanVien.fetchCount() > vm.arg.pagesize ? true : false)"
+													activePage="@bind(vm.arg.page)" onPaging="@command('cmd', notify=vm, atr='targetQueryNhanVien')" />
+				    						</n:div>
+				    					</n:div>
+				    				</n:div>
+				    			</n:div>
+    						</n:div>
+    					</n:div>
+    				</n:div>
+    			</n:div>
+    		</n:div>	    
+	    </n:div>
+	</n:section>
+</div>
